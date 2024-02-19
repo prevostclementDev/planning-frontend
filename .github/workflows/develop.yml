@@ -22,10 +22,13 @@ jobs:
           yarn install
           yarn generate
 
+      - name: ls file
+        run: ls
+
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          local-dir : ./output/public/
+          local-dir : ./output/public
           server-dir : ${{ secrets.SERVERDIRPREPROD }}
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
