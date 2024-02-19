@@ -19,7 +19,7 @@ jobs:
 
       - name: 🔨 Build Project
         run: |
-          yarn update
+          yarn install
           yarn generate
 
       - name: 📂 Sync files
