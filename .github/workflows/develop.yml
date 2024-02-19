@@ -21,9 +21,10 @@ jobs:
         run: |
           yarn install
           yarn generate
+          ls
 
       - name: ls file
-        run: ls
+        run: ls -al
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
