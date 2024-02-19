@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - develop
+
+name: 🚀 Deploy on pre-production
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: 🔨 Build Project
+        run: |
+          yarn update
+          yarn generate
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          local-dir : ./output/public/
+          server-dir : ${{ secrets.SERVERDIRPREPROD }}
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
