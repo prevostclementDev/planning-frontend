@@ -10,6 +10,9 @@ const modalEventCalendar = ref(null);
 const titleModalEvent = ref(null);
 const deleteEvent = ref(null);
 
+const config = useRuntimeConfig()
+console.log('Runtime config:', config.public.apiBase);
+
 let deleteEventSelected;
 
 const calendarOptions = ref({
