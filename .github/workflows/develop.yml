@@ -17,6 +17,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Create temporary .env file
+        run: echo "BASE_URL_API=https://preprod.api.doriane.app/" > .env
+
       - name: 🔨 Build Project
         run: |
           yarn install

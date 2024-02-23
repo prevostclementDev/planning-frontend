@@ -11,7 +11,7 @@ const titleModalEvent = ref(null);
 const deleteEvent = ref(null);
 
 const config = useRuntimeConfig()
-console.log('Runtime config:', config.public.apiBase);
+console.log('Runtime config:', config);
 
 let deleteEventSelected;
 
