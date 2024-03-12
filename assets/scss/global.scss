@@ -1,0 +1,15 @@
+// #############################
+//            RESET
+// #############################
+html { box-sizing: border-box; font-size: 16px; overflow-x: hidden; -webkit-overflow-scrolling: touch; overflow-scrolling: touch; }
+*, *:before, *:after { box-sizing: inherit; }
+body, h1, h2, h3, h4, h5, h6, p, ol, ul { margin: 0; padding: 0; font-weight: normal; }
+ol, ul { list-style: none; }
+img { max-width: 100%; height: auto; }
+body  { overflow-y: visible; position: relative; height: unset; }
+html, body { overflow-x: hidden; margin: 0;}
+
+* {scrollbar-width: none;scrollbar-color: rgba(143, 84, 160, 0) rgba(255, 255, 255, 0);}
+*::-webkit-scrollbar {width: 0;display: none;}
+*::-webkit-scrollbar-track {background: rgba(255, 255, 255, 0);}
+*::-webkit-scrollbar-thumb {background-color: rgba(143, 84, 160, 0);border-radius: 0;border: 0px solid rgba(255, 255, 255, 0);}

@@ -1,0 +1,31 @@
+@mixin fontPrimary($weight : 400){
+  font-family: 'Arial', sans-serif;
+  font-weight: $weight;
+}
+
+@mixin fontSecondary($weight : 400){
+  font-family: 'Sans Serif Collection', sans-serif;
+  font-style: normal;
+  font-weight: $weight;
+}
+
+@mixin flex($j : center,$a : center,$d : row,$w : nowrap,$gr : 0,$gc : 0) {
+  display: flex;
+  justify-content: $j;
+  align-items: $a;
+  flex-direction: $d;
+  flex-wrap: $w;
+  row-gap: $gr;
+  column-gap: $gc;
+}
+
+@mixin grid($tr : 1fr, $tc : 1fr,$area : false){
+  display: grid;
+  grid-template-rows: $tr;
+  grid-template-columns: $tc;
+
+  @if area != false {
+    grid-template-areas: $area;
+  }
+
+}
