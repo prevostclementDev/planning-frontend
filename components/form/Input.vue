@@ -47,4 +47,32 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
+
+label {
+  @include flex(flex-start,flex-start,column);
+  width: 100%;
+  height: 100%;
+
+  .title {
+    margin-bottom: 0.5rem;
+
+  }
+
+  input {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #BCBEC0;
+    background: #FFF;
+    padding: .8rem 1.8rem;
+    outline: none;
+
+    &:focus {
+      outline: 1px solid #BCBEC0;
+
+    }
+
+  }
+
+}
+
 </style>
