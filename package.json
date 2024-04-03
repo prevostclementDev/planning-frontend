@@ -16,7 +16,7 @@
     "@fullcalendar/multimonth": "^6.1.10",
     "@fullcalendar/timegrid": "^6.1.10",
     "@fullcalendar/vue3": "^6.1.10",
-    "nuxt": "^3.10.1",
+    "nuxt": "^3.11.1",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   }
