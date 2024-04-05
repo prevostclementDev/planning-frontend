@@ -1,18 +1,17 @@
 <script setup>
+import {useNavBar} from "~/stores/ui/navbar";
+
+const useNavBarStore = useNavBar()
+useNavBarStore.setNavBar(true)
+
 useHead(() => ({
   title : 'Dashboard'
 }))
-
-definePageMeta({
-  middleware : 'authentification'
-})
-
-
 </script>
 
 <template>
   <div>
-    <h1>Dashboard</h1>
+    <h2>Dashboard</h2>
   </div>
 </template>
 

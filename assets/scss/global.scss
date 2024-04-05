@@ -9,11 +9,20 @@ img { max-width: 100%; height: auto; }
 body  { overflow-y: visible; position: relative; height: unset; }
 html, body { overflow-x: hidden; margin: 0;}
 
+@import "portable/portable";
+@import "global/fonts";
+@import "global/classGeneration";
 
+@import "form/form";
+@import "calendar/override";
+@import "transition";
+@import "modal";
 
+// *****************
 // GLOBAL LINK STYLE
+// *****************
 a {
-  color: #000;
+  @include color(text);
   text-decoration: underline;
 
   &.rm-underline {
@@ -21,7 +30,24 @@ a {
   }
 
   span {
-    font-weight: 900;
+    font-weight: 700;
+
+  }
+
+}
+
+
+// ******
+// ERRORS
+// ******
+.errors {
+  @include flex(flex-start);
+  @include color(error0);
+  @include fontSize(xs);
+  margin: 5px;
+
+  svg {
+    margin-right: 8px;
 
   }
 

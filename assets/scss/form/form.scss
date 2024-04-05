@@ -1,0 +1,40 @@
+@import "formStepByStep";
+
+form {
+
+  .input-container {
+    @include flex(flex-start,flex-start,column,wrap,1rem,1rem);
+    width: 100%;
+
+  }
+
+  .group {
+    width: 100%;
+    @include flex(space-between, center,row,nowrap,10px,10px);
+
+    label, input {
+      width: 100%;
+    }
+
+  }
+
+  .action {
+    @include flex();
+    width: 100%;
+
+    &.start {
+      justify-content: flex-start;
+
+    }
+
+    &.between {
+      justify-content: space-between;
+    }
+
+    &.end {
+      justify-content: flex-end;
+    }
+
+  }
+
+}

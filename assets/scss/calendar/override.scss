@@ -1,0 +1,222 @@
+.fc {
+
+  .fc-timegrid-col.fc-day-today  {
+    background: none ;
+  }
+
+  .fc-scrollgrid {
+    border: none;
+
+    .fc-scrollgrid-section-header {
+
+      & > th {
+        border: none;
+
+      }
+
+      .fc-scroller-harness {
+
+        .fc-scroller {
+
+          .fc-col-header {
+
+            thead {
+              @include bgColor(light1);
+
+              tr {
+
+                th {
+
+                  &:first-child {
+
+                    border: none;
+
+                  }
+
+                  border-left: none;
+                  border-right: none;
+                  padding: 1rem;
+
+                  a {
+
+                    text-decoration: none;
+
+                  }
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+  .fc-timegrid-slots  {
+
+    table {
+
+      tbody {
+
+        tr {
+
+          td {
+
+            &:first-child {
+              border: none;
+
+            }
+
+          }
+
+          &:nth-child(2n-1) {
+
+            td {
+
+              &:last-child {
+                border-bottom: 1px solid getColor(light1);
+
+              }
+
+            }
+
+          }
+
+          &:nth-child(2n) {
+
+            td {
+
+              &:last-child {
+                border-bottom: 1px solid getColor(grey9);
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+  // Custom SCSS EVENT ON PLANNING VIEW
+  .fc-v-event {
+    border: none;
+    @include bgColor(grey9);
+    box-shadow: none;
+    border-radius: 10px;
+
+    .fc-event-main {
+      padding: 0;
+
+    }
+
+    .doriane-event-custom {
+      @include flex();
+      height: 100%;
+
+      .colorLine {
+        width: 10px;
+        height: 100%;
+        border-radius: 10px 0 0 10px;
+        @include bgColor(secondary0);
+
+      }
+
+      .content-doriane-event {
+        width: calc(100% - 10px);
+        padding: 5px 5px 5px 10px;
+        height: 100%;
+        @include flex(center,flex-start,column,wrap,10px,0px);
+        color: black;
+
+        .title {
+          font-size: calc( getFontSize(sm) - .3rem );
+
+        }
+
+        .info-sup {
+          @include flex(flex-start,center);
+
+          .classroom {
+            padding: 4px;
+            background: #909090;
+            border-radius: 5px;
+            margin-left: 10px;
+
+          }
+
+        }
+
+      }
+
+      &.s-120, &.s-90, &.s-60, &.s-30 {
+
+        .content-doriane-event {
+
+          .title {
+            font-size: getFontSize(s);
+
+          }
+
+          .info-sup {
+            display: none;
+
+          }
+
+        }
+
+        &.s-90 {
+
+          .content-doriane-event {
+
+            .time {
+              font-size: getFontSize(xxs);
+
+            }
+
+            .title {
+              font-size: getFontSize(xs);
+
+            }
+
+          }
+
+        }
+
+        &.s-60, &.s-30 {
+
+          .content-doriane-event {
+
+            .title {
+              font-size: getFontSize(xs);
+
+            }
+
+            .time {
+              display: none;
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}

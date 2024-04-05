@@ -1,122 +1,94 @@
 <script setup>
 import FullCalendar from "@fullcalendar/vue3";
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin,  { Draggable } from '@fullcalendar/interaction'
-import multiMonthPlugin from '@fullcalendar/multimonth'
+import { useCalendar } from '~/stores/calendar'
+import WeekSelector from "~/components/planning/weekSelector.vue";
+import GoBack from "~/components/planning/action/updateDatePlanning.vue";
+import Update from "~/components/icones/update.vue";
+import UpdateDatePlanning from "~/components/planning/action/updateDatePlanning.vue";
+
+const { $timeFormat } = useNuxtApp()
+
+const props = defineProps({
+  planningsId : {
+    type : String,
+    default : '',
+    required: true,
+  },
+  startDate : {
+    type : String,
+    default : '',
+    required: true
+  },
+  endDate : {
+    type : String,
+    default : '',
+    required: true
+  }
+})
+
+const startDateObject = new Date(props.startDate)
+const endDateObject = new Date(props.endDate)
 
 const calendar = ref(null);
-const calendarObject = ref(null);
-const modalEventCalendar = ref(null);
-const titleModalEvent = ref(null);
-const deleteEvent = ref(null);
+const calendarStore = useCalendar();
 
-const config = useRuntimeConfig()
-console.log('Runtime config:', config);
+calendarStore.mutation[calendarStore.mutationType.SET_CALENDAR_ID](props.planningsId)
 
-let deleteEventSelected;
+const nowDate = computed(() => {
+  const date = new Date(calendarStore.state.calendarCurrentDate)
 
-const calendarOptions = ref({
-  plugins: [ timeGridPlugin, interactionPlugin, multiMonthPlugin ],
-  droppable: true,
-  initialView: 'timeGridWeek',
-  weekends: false,
-  editable: true,
-  dayHeaderFormat : { weekday: 'long', day: 'numeric' },
-  locale : 'fr',
-  slotMinTime : '07:00:00',
-  slotMaxTime : '19:00:00',
-  titleFormat : { year: 'numeric', month: 'long' },
-  eventResizableFromStart : true,
-  allDaySlot: false,
-  navLinks : true,
-  views : {
-    viewMultiYear : {
-      type: 'multiMonthYear',
-      dayHeaderFormat : { weekday: 'long' },
-    },
-  },
-  headerToolbar: {
-    left: 'prev,next,today',
-    center: 'title',
-    right: 'timeGridWeek,timeGridDay,viewMultiYear',
-  },
-
-  eventClick : function (info) {
-
-    modalEventCalendar.value.style.top = info.jsEvent.clientY + 'px';
-    modalEventCalendar.value.style.left = info.jsEvent.clientX + 'px';
-
-    modalEventCalendar.value.style.display = 'block';
-    modalEventCalendar.value.style.opacity = 1;
-
-    deleteEventSelected = info.event;
-
-  },
-
-  events: [
-    {
-      title  : 'Evenement',
-      start  : '2024-02-12T12:30:00',
-      allDay : false // will make the time show
-    }
-  ]
-
-});
+  return `${$timeFormat.getMonthText(date.getMonth()) } ${date.getFullYear()}`
+})
 
 onMounted(() => {
 
-  console.log(calendarObject.value.getApi().getEvents())
-
-  new Draggable(calendar.value, {
-    itemSelector : '.draggable',
-  });
-
-  deleteEvent.value.onclick = (e) => {
-    if ( deleteEventSelected ) {
-
-      deleteEventSelected.remove();
-
-    }
-  }
+  calendarStore.mutation[calendarStore.mutationType.SET_CALENDAR](
+      calendar.value,
+      {
+        validRange: {
+          start: props.startDate,
+          end: props.endDate
+        },
+      }
+  )
 
 })
-
 </script>
 
 <template>
-  <section ref="calendar">
-    <div class="draggable" data-event='{ "id" : "1" , "title": "HTML / CSS", "duration": "01:00", "editable" : true, "description": "Autonomie" }' > HTML / CSS </div>
-    <FullCalendar ref="calendarObject" :options="calendarOptions"/>
+  <section>
 
-    <div id="modal-event-calendar" ref="modalEventCalendar">
-
-      <div class="top">
-        <h3 ref="titleModalEvent"></h3>
-
-        <div class="action">
-          <button ref="deleteEvent" data-delete="">Supprimer</button>
-        </div>
+    <div class="date">
+      <h3>{{ nowDate }}</h3>
+      <div class="action">
+        <update-date-planning />
       </div>
+    </div>
+
+    <week-selector :end-year="endDateObject.getFullYear()" :start-year="startDateObject.getFullYear()" :end-month="endDateObject.getMonth() + 1" :start-month="startDateObject.getMonth() + 1" />
+
+    <div>
+
+      <FullCalendar ref="calendar" :options="calendarStore.state.calendarOptions"/>
 
     </div>
 
   </section>
 </template>
 
-<style>
+<style lang="scss" scoped>
+.date {
+  @include flex(space-between);
+  margin: 0 0 1rem;
 
-#modal-event-calendar {
+  h3 {
 
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 20px;
-  background-color: white;
-  border: 1px solid black;
-  opacity: 0;
-  display: none;
-  z-index: 9999;
+    &::first-letter {
+      text-transform: uppercase;
+
+    }
+
+  }
 
 }
-
 </style>

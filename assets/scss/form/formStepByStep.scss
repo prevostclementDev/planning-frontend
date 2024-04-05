@@ -1,0 +1,21 @@
+form.stepByStep {
+
+  border-radius: 34px;
+  border: 1px solid getColor(primary4, .4);
+  @include bgColor(light2);
+
+  padding: 1.875rem 3.75rem;
+  margin: 0 auto;
+  width: 100%;
+
+  .step {
+
+    h2 {
+      text-align: center;
+      margin: 2rem 0;
+
+    }
+
+  }
+
+}

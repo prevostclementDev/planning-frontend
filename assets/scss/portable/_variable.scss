@@ -1,17 +1,223 @@
+@use 'sass:color';
+
+// Import font Roboto
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+// Font-size define
 $fontSize: (
-   sm: 0.75rem,
-   md: 1rem,
-   lg: 1.25rem,
+  xxs: 0.70rem,
+  xs: 0.80rem,
+  s: 1rem,
+  sm: 1.5rem,
+  m: 2rem,
+  l: 3rem,
 );
 
-$fontWeight : (
-  100: 100,
-  200: 200,
-  300: 300,
-  400: 400,
-  500: 500,
-  600: 600,
-  700: 700,
-  800: 800,
-  900: 900,
+// font weight
+$fontWeight : (100, 200, 300, 400, 500, 600, 700, 800, 900);
+
+// Color scheme
+$colors : (
+
+  'light1' : #f5f5f5,
+  'light2' : #fafafa,
+  'light3' : #ffffff,
+  'grey0' : #0a0a0a,
+  'grey1' : #1a1a1a,
+  'grey2' : #333333,
+  'grey3' : #4d4d4d,
+  'grey4' : #666666,
+  'grey5' : #808080,
+  'grey6' : #999999,
+  'grey7' : #b3b3b3,
+  'grey8' : #cccccc,
+  'grey9' : #e6e6e6,
+  'grey10' : #efefef,
+  'primary0' :  #93c0ff,
+  'primary1' :  #74a4e6,
+  'primary2' :  #6895d2,
+  'primary3' :  #537cb4,
+  'primary4' :  #38557e,
+  'secondary0' :  #fff4b5,
+  'secondary2' :  #ffee8c,
+  'secondary3' :  #fde767,
+  'secondary4' :  #d8bf32,
+  'third0' :  #f97d7d,
+  'third1' :  #e55d5d,
+  'third2' :  #d04848,
+  'third3' :  #bd2727,
+  'third4' :  #a51313,
+  'fourth0' :  #ffd99e,
+  'fourth2' :  #fecb7d,
+  'fourth3' :  #f3b95f,
+  'fourth4' :  #d08715,
+  'error0' : #E54545,
+  'valid0' : #0FAC1F,
+  'text' : #303741,
+
 );
+
+// font scheme
+$fontPrimary : 'Visby Round CF', sans-serif;
+$fontSecondary :  "Roboto", sans-serif;
+
+// Typographie
+$typographies: (
+  h1 : (
+    font-size: map-get($fontSize,l),
+    font-family: $fontPrimary,
+    font-weight: 900,
+    font-style: normal,
+    text-decoration: none,
+    text-transform: none,
+  ),
+  h2: (
+    font-size: map-get($fontSize,m),
+    font-family: $fontPrimary,
+    font-weight: 500,
+    font-style: normal,
+    text-decoration: none,
+    text-transform: none
+  ),
+  h3: (
+    font-size: map-get($fontSize,sm),
+    font-family: $fontPrimary,
+    font-weight: 400,
+    font-style: normal,
+    text-decoration: none,
+    text-transform: none
+  ),
+  h4: (
+    font-size: map-get($fontSize,s),
+    font-family: $fontPrimary,
+    font-weight: 700,
+    font-style: normal,
+    text-decoration: none,
+    text-transform: none
+  ),
+  text: (
+    font-size: map-get($fontSize,s),
+    font-family: $fontSecondary,
+    font-weight: 400,
+    font-style: normal,
+    text-decoration: none,
+    text-transform: none
+  ),
+  textBold: (
+    font-size: map-get($fontSize,s),
+    font-family: $fontSecondary,
+    font-weight: 700,
+    font-style: normal,
+    text-decoration: none,
+    text-transform: none
+  ),
+  textLight: (
+    font-size: map-get($fontSize,s),
+    font-family: $fontSecondary,
+    font-weight: 300,
+    font-style: normal,
+    text-decoration: none,
+    text-transform: none
+  ),
+  textButton: (
+    font-size: map-get($fontSize,s),
+    font-family: $fontSecondary,
+    font-weight: 600,
+    font-style: normal,
+    text-decoration: none,
+    text-transform: capitalize
+  )
+);
+
+// Divers effects
+$effects : (
+  blur : (
+    border: 3px solid map-get($colors,'light2'),
+    background: color.change(map-get($colors,'grey9'), $alpha : 0.3),
+    backdrop-filter: blur(12.5px)
+  ),
+  shadow : (
+    box-shadow: 0 5px 16px 0 rgba(8, 15, 52, 0.06),
+  ),
+  shadowFocus : (
+    box-shadow: 0px 0px 8px 0px rgba(122, 90, 248, 0.24),
+  )
+);
+
+// Button
+$interaction : (
+  button-primary : map-merge(
+      map-get($typographies,textBold),
+      (
+        padding: .5rem 3rem,
+        outline: none,
+        font-family : $fontSecondary,
+        border: 1px solid map-get($colors,'primary4'),
+        background-color: map-get($colors,'primary4'),
+        color: map-get($colors,'light1'),
+        border-radius: 6px,
+        font-weight: 600,
+        margin: 1.8rem 0,
+        cursor: pointer,
+        transition : 0.3s ease-in-out all,
+        hover : (
+          background-color : map-get($colors,'primary2'),
+          border: 1px solid map-get($colors,'primary2'),
+        ),
+        focus : map-merge(
+            map-get($effects,shadowFocus),
+            ( outline : 1px solid map-get($colors, primary1) )
+        )
+      )
+  ),
+  button-primary-small : map-merge(
+      map-get($typographies,textBold),
+      (
+        padding: .5rem 1rem,
+        outline: none,
+        font-family : $fontSecondary,
+        border: 1px solid map-get($colors,'primary4'),
+        background-color: map-get($colors,'primary4'),
+        color: map-get($colors,'light1'),
+        border-radius: 6px,
+        font-weight: 600,
+        margin: 0,
+        cursor: pointer,
+        transition : 0.3s ease-in-out all,
+        hover : (
+          background-color : map-get($colors,'primary2'),
+          border: 1px solid map-get($colors,'primary2'),
+        ),
+        focus : map-merge(
+            map-get($effects,shadowFocus),
+            ( outline : 1px solid map-get($colors, primary1) )
+        )
+      )
+  ),
+  clear : (
+    background: transparent,
+    outline : none,
+    border : none,
+    cursor: pointer,
+    width : fit-content,
+    height : fit-content,
+    padding: 0,
+    margin : 0,
+  ),
+  input : map-merge(
+    map-get($typographies,text),
+    (
+      width: 100%,
+      border-radius: 8px,
+      border: 1px solid map-get($colors,grey8),
+      background : map-get($colors,light3),
+      padding: .8rem 1.8rem,
+      outline: none,
+      focus : map-merge(
+          map-get($effects,shadowFocus),
+          ( outline : 1px solid map-get($colors, primary5) )
+      ),
+    )
+  )
+);
+

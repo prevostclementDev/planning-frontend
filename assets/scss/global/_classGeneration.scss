@@ -1,0 +1,116 @@
+@use 'sass:color';
+
+// ************************
+// GENERATE FONT SIZE CLASS
+// ************************
+@each $name, $size in $fontSize {
+
+  .fs-#{$name} {
+    font-size: $size;
+  }
+
+}
+
+// ***********************************
+// GENERATE FONT WEIGHT CLASS BY MIXIN
+// ***********************************
+@each $weight in $fontWeight {
+
+  .fw-#{$weight} {
+    font-weight: $weight;
+  }
+
+  .f-p-#{$weight} {
+    @include fontPrimary($weight);
+  }
+
+  .f-s-#{$weight} {
+    @include fontSecondary($weight);
+  }
+
+}
+
+// **********************
+// generation color class
+// **********************
+:root {
+  @each $name, $color in $colors {
+    --color-#{$name} : #{$color};
+
+    @for $i from 1 through 10 {
+      --color-#{$name}-opacity-#{$i} : #{color.change( $color , $alpha : calc($i / 10) )};
+    }
+
+  }
+}
+
+@each $name, $color in $colors {
+
+  .c-#{$name} {
+    color: var(--color-#{$name});
+  }
+
+  .bg-#{$name} {
+    background: var(--color-#{$name});
+  }
+
+  @for $i from 1 through 10 {
+
+    .bg-opacity-#{$i}  {
+      background: var(--color-#{$name}-opacity-#{$i});
+    }
+
+    .c-opacity-#{$i}  {
+      background: var(--color-#{$name}-opacity-#{$i});
+    }
+
+  }
+
+}
+
+// ***********
+// Typographie
+// ***********
+@each $name, $typoContent in $typographies {
+  .#{$name} {
+    @each $propertyText, $value in $typoContent {
+      #{$propertyText} : #{$value}
+    }
+  }
+
+  @if ($name == h1 or $name == h2 or $name == h3 or $name == h4 or $name == h5 or $name == h6 or $name == p ) {
+    #{$name} {
+      @each $propertyText, $value in $typoContent {
+        #{$propertyText} : #{$value}
+      }
+    }
+  }
+
+}
+
+// ***********
+//   BUTTON
+// ***********
+@each $name, $content in $interaction {
+
+  .#{$name} {
+
+    @each $attr, $value in $content {
+
+      @if $attr == 'hover' or $attr == 'focus' {
+
+        &:#{$attr} {
+          @each $attr2, $value2 in $value {
+            #{$attr2} : #{$value2}
+          }
+        }
+
+      } @else {
+        #{$attr} : #{$value}
+      }
+
+    }
+
+  }
+
+}

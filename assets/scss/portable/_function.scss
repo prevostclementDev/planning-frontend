@@ -1,0 +1,26 @@
+@use 'sass:color';
+
+// Get array of typographie
+@function getTypographie($name) {
+  @return map-get($typographies, $name);
+}
+
+// Get color
+@function getColor($name, $opacity : 1) {
+  @return color.change(map-get($colors, $name), $alpha : $opacity );
+}
+
+// Get size text
+@function getFontSize($name) {
+  @return map-get($fontSize,$name);
+}
+
+// get button
+@function getInteraction($name){
+  @return map-get($interaction,$name);
+}
+
+// get effects
+@function getEffects($name){
+  @return map-get($effects,$name);
+}
