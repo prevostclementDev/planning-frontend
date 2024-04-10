@@ -42,6 +42,16 @@ button {
 
   }
 
+  &.secondary {
+    @include interaction(button-secondary);
+
+  }
+
+  &.delete {
+    @include interaction(button-delete);
+
+  }
+
   svg {
     margin-right: 10px;
 

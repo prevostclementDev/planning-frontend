@@ -4,6 +4,7 @@ import Delete from "~/components/icones/delete.vue";
 import Update from "~/components/icones/update.vue";
 import Arrow from "~/components/icones/arrow.vue";
 import {useFetch} from "~/stores/Fetch.js";
+import SmallLoader from "~/components/loader/smallLoader.vue";
 
 const useFetchStore = useFetch()
 
@@ -30,29 +31,31 @@ const props = defineProps({
     type : Array,
     required : false,
     default : []
+  },
+  dataIsLoading : {
+    type : Boolean,
+    required : false,
+    default : false,
   }
 })
 
-const titleArrayRender = ref(props.title)
-const dataArrayRender = ref(props.data)
-const dataPagination = ref(props.pagination)
+const titleArrayRender = ref(( props.title ) ? props.title : [])
+const dataArrayRender = ref((props.data) ? props.data : [] )
+const dataPagination = ref((props.pagination) ? props.pagination : {})
 
-// Set custom columns
-if ( props.customColumn.length !== 0 ) {
+watch(() => props.data, (nv,ov) => {
+  dataArrayRender.value = nv
+  setCustomColumn()
+  renderCustomColumn()
+})
 
-  props.customColumn.forEach(el => {
-
-    titleArrayRender.value.push(el.title)
-
-  })
-
-}
-
-await renderCustomColumn()
+watch(() => props.pagination, (nv,ov) => {
+  dataPagination.value = nv
+})
 
 async function previousPagination() {
   if ( dataPagination.value.previous_uri ) {
-    await updateList( dataPagination.value.previous_uri)
+    await updateList( dataPagination.value.previous_uri )
   }
 }
 
@@ -79,7 +82,9 @@ async function updateList(url){
     dataArrayRender.value = useFetchStore.state.data[url].data.array
     dataPagination.value = useFetchStore.state.data[url].data.pagination
 
+    autcompletedCustomField()
     await renderCustomColumn()
+
 
   }
 
@@ -102,6 +107,37 @@ async function renderCustomColumn(){
 
   }
 }
+
+function setCustomColumn() {
+  // Set custom columns
+  if ( props.customColumn.length !== 0 ) {
+
+    props.customColumn.forEach(el => {
+
+      titleArrayRender.value.push(el.title)
+
+    })
+
+    autcompletedCustomField()
+
+  }
+
+}
+
+function autcompletedCustomField(){
+
+  props.customColumn.forEach(el => {
+
+    for (const element of dataArrayRender.value) {
+      const key = dataArrayRender.value.indexOf(element);
+
+      dataArrayRender.value[key][el.title] = 'Chargement...'
+
+    }
+
+  })
+
+}
 </script>
 
 <template>
@@ -114,7 +150,16 @@ async function renderCustomColumn(){
         </tr>
       </thead>
       <tbody>
-        <tr v-if="dataArrayRender.length !== 0" v-for="obj in dataArrayRender">
+
+        <tr v-if="dataIsLoading" class="loading" >
+          <td colspan="100%">
+            <div>
+              <small-loader custom-class="blue full" />
+            </div>
+          </td>
+        </tr>
+
+        <tr v-else-if="dataArrayRender.length !== 0" v-for="obj in dataArrayRender">
 
           <td
               v-for="dataEntry in Object
@@ -216,6 +261,18 @@ async function renderCustomColumn(){
               margin: 0 .4rem;
 
             }
+
+          }
+
+        }
+
+        &.loading {
+          padding: 1rem;
+          width: 100%;
+
+          div {
+            @include flex();
+            height: 200px;
 
           }
 

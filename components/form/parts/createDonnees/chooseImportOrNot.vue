@@ -1,6 +1,6 @@
 <script setup>
 import Button from "~/components/form/interaction/Button.vue";
-import ImportsUsers from "~/components/form/importsUsers.vue";
+import importFile from "~/components/form/importFile.vue";
 
 const isImport = ref(false)
 
@@ -14,6 +14,10 @@ const props = defineProps({
     type : Function,
     default : (data) => {},
     required: false,
+  },
+  importUrl : {
+    type : String,
+    required : true
   }
 })
 </script>
@@ -30,7 +34,7 @@ const props = defineProps({
 
   </div>
   <div v-else>
-    <imports-users :onsuccess="(data) => onImportSuccess(data)" />
+    <import-file :onsuccess="(data) => onImportSuccess(data)"  :url="importUrl"/>
 
     <div class="action">
       <nuxt-link @click.prevent="onChoose('table')">Ne pas importer de fichier</nuxt-link>

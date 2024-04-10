@@ -3,7 +3,8 @@ export const useModal = defineStore('modal', () => {
 
   const actionType = {
     OPEN_MODAL : 'OPEN_MODAL',
-    CLOSE_MODAL : 'CLOSE_MODAL'
+    CLOSE_MODAL : 'CLOSE_MODAL',
+    OPEN_CONFIRM_DELETE : 'OPEN_CONFIRM_DELETE_MODAL'
   }
 
   const mutationType = {
@@ -50,6 +51,12 @@ export const useModal = defineStore('modal', () => {
 
     [actionType.CLOSE_MODAL]() {
       mutation[mutationType.DELETE_OPEN_MODAL]()
+      mutation[mutationType.SET_PROPS_MODAL]({})
+    },
+
+    [actionType.OPEN_CONFIRM_DELETE](url) {
+      mutation[mutationType.SET_OPEN_MODAL]('delete')
+      mutation[mutationType.SET_PROPS_MODAL]({ deleteUrl : url })
     }
 
   })

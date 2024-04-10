@@ -4,8 +4,10 @@ import Input from "~/components/form/interaction/Input.vue";
 import {email, helpers, minLength, required} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
 import {useAuth} from "~/stores/Auth.js";
+import {useFetch} from "~/stores/Fetch.js";
 
 const useAuthStore = useAuth();
+const useFetchStore = useFetch()
 const { $toast } = useNuxtApp()
 
 // *************************************
@@ -150,7 +152,7 @@ async function submitForm(e){
 
     <div class="action">
 
-      <Button type="submit" :loading="useAuthStore.isLoading">S'inscrire</Button>
+      <Button type="submit" :loading="useFetchStore.state.loading['schoolspaces']">S'inscrire</Button>
 
     </div>
 

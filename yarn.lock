@@ -5,6 +5,13 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@aesoper/normal-utils@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "@aesoper/normal-utils@npm:0.1.5"
+  checksum: d4941cd0ed615b5d94f437f60ab42dfcf94e815deb9285566cef740c805b717004498f4ec59509d25a651487414b95200bd77dadac07baa228bbec054e51bea1
+  languageName: node
+  linkType: hard
+
 "@ampproject/remapping@npm:^2.2.0":
   version: 2.2.1
   resolution: "@ampproject/remapping@npm:2.2.1"
@@ -1555,6 +1562,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@popperjs/core@npm:^2.11.8":
+  version: 2.11.8
+  resolution: "@popperjs/core@npm:2.11.8"
+  checksum: e5c69fdebf52a4012f6a1f14817ca8e9599cb1be73dd1387e1785e2ed5e5f0862ff817f420a87c7fc532add1f88a12e25aeb010ffcbdc98eace3d55ce2139cf0
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-alias@npm:^5.1.0":
   version: 5.1.0
   resolution: "@rollup/plugin-alias@npm:5.1.0"
@@ -1915,6 +1929,13 @@ __metadata:
   version: 1.20.2
   resolution: "@types/resolve@npm:1.20.2"
   checksum: 61c2cad2499ffc8eab36e3b773945d337d848d3ac6b7b0a87c805ba814bc838ef2f262fc0f109bfd8d2e0898ff8bd80ad1025f9ff64f1f71d3d4294c9f14e5f6
+  languageName: node
+  linkType: hard
+
+"@types/web-bluetooth@npm:^0.0.20":
+  version: 0.0.20
+  resolution: "@types/web-bluetooth@npm:0.0.20"
+  checksum: d6d61da683e876e8995ac57e2e5229d829d0f536deb3568d4430898fc626ebcb7e065fe7f655ac6a5205702f7f7049e6335abe689cd5291241eef6e39e8a4371
   languageName: node
   linkType: hard
 
@@ -2313,6 +2334,34 @@ __metadata:
     "@vue/composition-api":
       optional: true
   checksum: 4dfb24076533ba962ca18ffbfd4c24fc98f6b209bb12eb36a9344a59839ad97375c815f96dd4b415de8e81bd5dae4dc2b28efa62721ac450b707e92b40c4afba
+  languageName: node
+  linkType: hard
+
+"@vueuse/core@npm:^10.1.2":
+  version: 10.9.0
+  resolution: "@vueuse/core@npm:10.9.0"
+  dependencies:
+    "@types/web-bluetooth": ^0.0.20
+    "@vueuse/metadata": 10.9.0
+    "@vueuse/shared": 10.9.0
+    vue-demi: ">=0.14.7"
+  checksum: 6d26660e4e88e2e6b34f84cb832d919d296a198e6c7f8ef93fb5d0442b53ba3872c617c1144190328992b44dde33a8e249b3182ac35128d460a457488a6df940
+  languageName: node
+  linkType: hard
+
+"@vueuse/metadata@npm:10.9.0":
+  version: 10.9.0
+  resolution: "@vueuse/metadata@npm:10.9.0"
+  checksum: e381d3134e1a5965e157503ddb1187f671316386ab0c779d3fc1b9c91d6658086c417414f4642554382ac43fd800d7565f5f25824b678433f937a917e931387e
+  languageName: node
+  linkType: hard
+
+"@vueuse/shared@npm:10.9.0":
+  version: 10.9.0
+  resolution: "@vueuse/shared@npm:10.9.0"
+  dependencies:
+    vue-demi: ">=0.14.7"
+  checksum: e6fc1e04aa63ead37694b5543cacd8c1b55ade5ce7416699302a4db5e5c3c083b7ecda9156445e07a477eb86664740d368a03584b55859dbe0cf0abbec3e21ab
   languageName: node
   linkType: hard
 
@@ -4105,6 +4154,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gradient-parser@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "gradient-parser@npm:1.0.2"
+  checksum: 6669639363faeb8c65718c73b44f4af570df79cd6b9bccce067765b9e33daed39b0b8534878e3fe8cf52cf83a3b38a80de295114d0ff2993d12982652c33fe47
+  languageName: node
+  linkType: hard
+
 "gzip-size@npm:^7.0.0":
   version: 7.0.0
   resolution: "gzip-size@npm:7.0.0"
@@ -4504,6 +4560,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-plain-object@npm:5.0.0":
+  version: 5.0.0
+  resolution: "is-plain-object@npm:5.0.0"
+  checksum: e32d27061eef62c0847d303125440a38660517e586f2f3db7c9d179ae5b6674ab0f469d519b2e25c147a1a3bc87156d0d5f4d8821e0ce4a9ee7fe1fcf11ce45c
+  languageName: node
+  linkType: hard
+
 "is-primitive@npm:^3.0.1":
   version: 3.0.1
   resolution: "is-primitive@npm:3.0.1"
@@ -4794,6 +4857,13 @@ __metadata:
     mlly: ^1.4.2
     pkg-types: ^1.0.3
   checksum: b0a6931e588ad4f7bf4ab49faacf49e07fc4d05030f895aa055d46727a15b99300d39491cf2c3e3f05284aec65565fb760debb74c32e64109f4a101f9300d81a
+  languageName: node
+  linkType: hard
+
+"lodash-es@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: 05cbffad6e2adbb331a4e16fbd826e7faee403a1a04873b82b42c0f22090f280839f85b95393f487c1303c8a3d2a010048bf06151a6cbe03eee4d388fb0a12d2
   languageName: node
   linkType: hard
 
@@ -5570,6 +5640,7 @@ __metadata:
     vue-dragscroll: ^4.0.5
     vue-js-modal: ^2.0.1
     vue-router: ^4.2.5
+    vue3-colorpicker: ^2.3.0
     vue3-toastify: ^0.2.1
   languageName: unknown
   linkType: soft
@@ -7209,6 +7280,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tinycolor2@npm:^1.4.2":
+  version: 1.6.0
+  resolution: "tinycolor2@npm:1.6.0"
+  checksum: 6df4d07fceeedc0a878d7bac47e2cd47c1ceeb1078340a9eb8a295bc0651e17c750f73d47b3028d829f30b85c15e0572c0fd4142083e4c21a30a597e47f47230
+  languageName: node
+  linkType: hard
+
 "to-fast-properties@npm:^2.0.0":
   version: 2.0.0
   resolution: "to-fast-properties@npm:2.0.0"
@@ -7846,7 +7924,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-demi@npm:>=0.14.5":
+"vue-demi@npm:>=0.14.5, vue-demi@npm:>=0.14.7":
   version: 0.14.7
   resolution: "vue-demi@npm:0.14.7"
   peerDependencies:
@@ -7913,6 +7991,41 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: 2449db4f3a1b3f0ccd16a3788000e47f0e26ca7035b6adf48ebd51d189eb2bad6c39664476cfad9c2ca22988032f5190c99970718495aa2a5c5595d50c8f71b9
+  languageName: node
+  linkType: hard
+
+"vue-types@npm:^4.1.0":
+  version: 4.2.1
+  resolution: "vue-types@npm:4.2.1"
+  dependencies:
+    is-plain-object: 5.0.0
+  peerDependencies:
+    vue: ^2.0.0 || ^3.0.0
+  checksum: 9ce68b3731dda30acf2b696b6791cfac1b45e8e995698aa9fe9126723ba7217fda4321c585ce7f9826f31681afcc24786b9fb32956d582dcf1b459cbca49e28e
+  languageName: node
+  linkType: hard
+
+"vue3-colorpicker@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "vue3-colorpicker@npm:2.3.0"
+  dependencies:
+    "@aesoper/normal-utils": ^0.1.5
+    "@popperjs/core": ^2.11.8
+    "@vueuse/core": ^10.1.2
+    gradient-parser: ^1.0.2
+    lodash-es: ^4.17.21
+    tinycolor2: ^1.4.2
+    vue-types: ^4.1.0
+  peerDependencies:
+    "@aesoper/normal-utils": ^0.1.5
+    "@popperjs/core": ^2.11.8
+    "@vueuse/core": ^10.1.2
+    gradient-parser: ^1.0.2
+    lodash-es: ^4.17.21
+    tinycolor2: ^1.4.2
+    vue: ^3.2.6
+    vue-types: ^4.1.0
+  checksum: c566152675e75c44a82cbf38c5f90c6afc7b53ecde5420364f1ce8cc5e1e0009925e15c053934adc5e6b3f66c9d25a69a005905784a4988d90562f4ca25b04ca
   languageName: node
   linkType: hard
 

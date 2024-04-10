@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia'
 import {useFetch} from "~/stores/Fetch.js";
+import {useRouting} from "~/stores/routing.js";
 export const useAuth = defineStore('auth', () => {
+
+  const useRoutingStore = useRouting()
 
   const localAuthItem = 'AUTH'
 
-  const loginPath = '/se-connecter'
+  const loginPath = useRoutingStore.url.connexion
 
   const initialValue = {
     'X-CSRF-TOKEN' : null,

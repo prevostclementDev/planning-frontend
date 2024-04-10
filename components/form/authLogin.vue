@@ -111,8 +111,7 @@ async function submitForm(e){
 
     <div class="action">
       <a href="">Mot de passe oublié ?</a>
-
-      <Button type="submit" :loading="useFetchStore.state.loading['connexion']">Se connecter</Button>
+      <Button type="submit" :loading="( useFetchStore.state.loading['connection'] ) ? useFetchStore.state.loading['connection'] : false">Se connecter</Button>
 
     </div>
 

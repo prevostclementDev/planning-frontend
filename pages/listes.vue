@@ -2,9 +2,11 @@
 import Ariane from "~/components/navigation/ariane.vue";
 import Folder from "~/components/icones/folder.vue";
 import {useNavBar} from "~/stores/ui/navbar";
+import {useRouting} from "~/stores/routing.js";
 
+const useRoutingStore = useRouting()
 const useNavBarStore = useNavBar()
-useNavBarStore.setNavBar(true)
+useNavBarStore.setNavBar(false)
 
 useHead(() => ({
   title : 'Mes listes'
@@ -13,7 +15,10 @@ useHead(() => ({
 
 <template>
   <div>
-    <ariane :links="[{ text : 'Dashboard', url : '/' }, {text : 'Mes listes'}]" />
+    <ariane :links="[
+        { text : 'Dashboard', url : useRoutingStore.url.dashboard },
+        {text : 'Mes listes'}]"
+    />
     <div class="title">
       <h2>Mes listes</h2>
       <nuxt-link to="/creer-des-donnees">
@@ -37,32 +42,32 @@ useHead(() => ({
         </svg>
       </div>
 
-      <nuxt-link to="/liste/mes-cours" class="folder">
+      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-cours')" class="folder">
         <folder />
         <h3>Mes cours</h3>
       </nuxt-link>
 
-      <nuxt-link to="/liste/mes-programmes" class="folder w-75">
+      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-programmes')" class="folder w-75">
         <folder />
         <h3>Mes Programmes</h3>
       </nuxt-link>
 
-      <nuxt-link to="/liste/mes-classes" class="folder">
+      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-classes')" class="folder">
         <folder />
         <h3>Mes classes</h3>
       </nuxt-link>
 
-      <nuxt-link to="/liste/mes-intervenants" class="folder">
+      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-intervenants')" class="folder">
         <folder />
         <h3>Mes intervenants</h3>
       </nuxt-link>
 
-      <nuxt-link to="/liste/mes-salles" class="folder">
+      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-salles')" class="folder">
         <folder />
         <h3>Mes salles</h3>
       </nuxt-link>
 
-      <nuxt-link to="/liste/mes-eleves" class="folder">
+      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-eleves')" class="folder">
         <folder />
         <h3>Mes élèves</h3>
       </nuxt-link>
@@ -100,6 +105,7 @@ useHead(() => ({
     border-radius: 8px;
     text-decoration: none;
     transition: 0.3s ease-in-out background;
+    text-align: center;
 
     &.w-75 {
       width: calc(75% - 20px);

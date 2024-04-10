@@ -189,6 +189,7 @@ const useNavBarStore = useNavBar()
       }
 
       .svg  {
+        @include flex();
         width: 23px;
         height: 20px;
         transition: 0.2s ease-in-out transform;
@@ -267,7 +268,7 @@ const useNavBarStore = useNavBar()
         }
 
         .svg {
-          display: block;
+          display: flex;
           opacity: 1;
 
         }

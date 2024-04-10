@@ -11,8 +11,8 @@ const calendarStore = useCalendar();
     <div class="containsBtn">
       <Button custom-class="small" @click.prevent="calendarStore.state.calendar.getApi().prev()"> <arrow custom-class="rotate" /> </Button>
     </div>
-    <div class="containsBtn" @click.prevent="calendarStore.state.calendar.getApi().next()">
-      <Button custom-class="small"> <arrow /> </Button>
+    <div class="containsBtn">
+      <Button custom-class="small" @click.prevent="calendarStore.state.calendar.getApi().next()"> <arrow /> </Button>
     </div>
   </div>
 </template>

@@ -4,9 +4,6 @@ import UserTopNav from "~/components/navigation/userTopNav.vue"
 import {useNavBar} from "~/stores/ui/navbar";
 
 const useNavBarStore = useNavBar()
-
-const isFullNavBar = ref(false)
-
 </script>
 
 <template>

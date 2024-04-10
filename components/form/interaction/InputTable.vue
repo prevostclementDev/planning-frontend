@@ -4,6 +4,7 @@ import Delete from "~/components/icones/delete.vue";
 import Button from "~/components/form/interaction/Button.vue";
 import Add from "~/components/icones/add.vue";
 import Select from "~/components/form/interaction/Select.vue";
+import {ColorPicker} from "vue3-colorpicker";
 
 const props = defineProps({
   inputTitle: {
@@ -51,16 +52,19 @@ const arrayName = Object.keys(props.inputModel);
               v-if="specificField[id] && specificField[id].type === 'select'"
               v-model="data[id]"
               custom-class="tableView"
+              :is-error="(data.errors !== null && data.errors[id])"
+              :errors="(data.errors !== null && data.errors[id]) ? [data.errors[id]] : []"
           >
             <option v-for="(options, key) in specificField[id].data" :value="key">{{ options }}</option>
           </Select>
+          <color-picker v-else-if="specificField[id] && specificField[id].type === 'color'" v-model:pureColor="data[id]"/>
           <Input
               v-else
               :type="( specificField[id] && specificField[id].type ) ? specificField[id].type : 'text' "
               placeholder="Saisir le texte"
               v-model="data[id]"
               custom-class="tableView"
-              :is-error="data.errors !== null && data.errors[id]"
+              :is-error="(data.errors !== null && data.errors[id])"
               :errors="(data.errors !== null && data.errors[id]) ? [data.errors[id]] : []"
           />
         </div>
@@ -110,6 +114,11 @@ const arrayName = Object.keys(props.inputModel);
 
       td {
         margin: 0;
+
+      }
+
+      div {
+        padding: 0 5px;
 
       }
 

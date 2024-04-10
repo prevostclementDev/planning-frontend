@@ -194,6 +194,54 @@ $interaction : (
         )
       )
   ),
+  button-secondary : map-merge(
+      map-get($typographies,textBold),
+      (
+        padding: .5rem 3rem,
+        outline: none,
+        font-family : $fontSecondary,
+        border: 1px solid map-get($colors,'primary4'),
+        background-color: map-get($colors,'light3'),
+        color: map-get($colors,'primary4'),
+        border-radius: 6px,
+        font-weight: 600,
+        cursor: pointer,
+        transition : 0.3s ease-in-out all,
+        hover : (
+          background-color : map-get($colors,'primary4'),
+          color : map-get($colors,'light3'),
+          border : 1px solid map-get($colors, 'primary4'),
+        ),
+        focus : map-merge(
+            map-get($effects,shadowFocus),
+            ( outline : 1px solid map-get($colors, primary1) )
+        )
+      )
+  ),
+  button-delete : map-merge(
+      map-get($typographies,textBold),
+      (
+        padding: .5rem 3rem,
+        outline: none,
+        font-family : $fontSecondary,
+        border: 1px solid map-get($colors,'third3'),
+        background-color: map-get($colors,'third3'),
+        color: map-get($colors,'light3'),
+        border-radius: 6px,
+        font-weight: 600,
+        cursor: pointer,
+        transition : 0.3s ease-in-out all,
+        hover : (
+          background-color : map-get($colors,'third1'),
+          color : map-get($colors,'light3'),
+          border : 1px solid map-get($colors, 'third1'),
+        ),
+        focus : map-merge(
+            map-get($effects,shadowFocus),
+            ( outline : 1px solid map-get($colors, third0) )
+        )
+      )
+  ),
   clear : (
     background: transparent,
     outline : none,

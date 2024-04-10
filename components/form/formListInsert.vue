@@ -227,11 +227,14 @@ function setInError(errors) {
   })
 
   // remove element without error
+  const _tmpError = []
   formData.value.modelOn.forEach((data,key) => {
-    if ( ! inError.includes(key.toString()) ) {
-      formData.value.modelOn.splice( key, 1 )
+    if ( inError.includes(key.toString()) ) {
+      _tmpError.push(data)
     }
   })
+
+  formData.value.modelOn = _tmpError
 
 }
 

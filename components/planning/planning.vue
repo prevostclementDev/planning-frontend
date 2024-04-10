@@ -1,7 +1,7 @@
 <script setup>
 import FullCalendar from "@fullcalendar/vue3";
 import { useCalendar } from '~/stores/calendar'
-import WeekSelector from "~/components/planning/weekSelector.vue";
+import WeekSelector from "~/components/planning/action/weekSelector.vue";
 import GoBack from "~/components/planning/action/updateDatePlanning.vue";
 import Update from "~/components/icones/update.vue";
 import UpdateDatePlanning from "~/components/planning/action/updateDatePlanning.vue";
@@ -60,7 +60,7 @@ onMounted(() => {
 
     <div class="date">
       <h3>{{ nowDate }}</h3>
-      <div class="action">
+      <div class="action end">
         <update-date-planning />
       </div>
     </div>
@@ -87,6 +87,11 @@ onMounted(() => {
       text-transform: uppercase;
 
     }
+
+  }
+
+  .action {
+    width: fit-content;
 
   }
 

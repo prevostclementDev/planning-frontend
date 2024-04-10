@@ -6,13 +6,16 @@ import Tabs from "~/components/form/interaction/Tabs.vue";
 import ActionPanel from "~/components/planning/actionPanel.vue";
 import Ariane from "~/components/navigation/ariane.vue";
 import {useNavBar} from "~/stores/ui/navbar";
+import {useRouting} from "~/stores/routing.js";
+import Sidebar from "~/components/planning/sidebar.vue";
 
+const useRoutingStore = useRouting()
 const useNavBarStore = useNavBar()
 useNavBarStore.setNavBar(false)
 
 const route = useRoute()
 
-const titlePage = ref('Chargement...')
+const titlePage = ref(null)
 
 useHead(() => ({
   title : titlePage.value
@@ -21,8 +24,6 @@ useHead(() => ({
 const urlApi = `/schoolspaces/plannings/${route.params.id}`
 
 const useFetchStore = useFetch()
-
-const displayRightPanel = ref('programs')
 
 const { state } = storeToRefs(useFetchStore)
 
@@ -51,26 +52,37 @@ onUnmounted(() => {
 
 <template>
 
-  <ariane :links="[{ text : 'Dashboard', url : '/' }, {text : 'Mes plannings', url : '/plannings'}, { text : titlePage }]" />
+  <ariane :links="[
+      { text : 'Dashboard', url : useRoutingStore.url.dashboard },
+      {text : 'Mes plannings', url : useRoutingStore.url.planningsList },
+      { text : titlePage }]"
+  />
+
   <h2> {{ titlePage }} </h2>
 
-  <div v-if="state?.data[urlApi]?.data?.planning?.name" class="planningPage">
+  <div v-if="state.loading[urlApi]" class="loading">
+    <loader-small-loader custom-class="blue"/>
+  </div>
+  <div v-else-if="state?.data[urlApi]?.data?.planning?.name" class="planningPage">
 
     <div class="planningContainer">
       <planning :plannings-id="route.params.id" :start-date="state?.data[urlApi]?.data?.planning.start_date" :end-date="state?.data[urlApi]?.data?.planning.end_date" />
     </div>
 
     <div class="actionContainer">
-      <Tabs v-model="displayRightPanel" :action="{ programs : 'Le programme', action : 'Action' }" :default-value="displayRightPanel" />
-
-      <action-panel v-show="displayRightPanel === 'action'" />
-      <draggable-course-liste v-show="displayRightPanel === 'programs'" :id-calendar="route.params.id" />
+      <sidebar :planningId="route.params.id" />
     </div>
 
   </div>
 </template>
 
 <style scoped lang="scss">
+.loading {
+  @include flex();
+  height: 20vh;
+
+}
+
 .planningPage {
   @include flex(flex-start,flex-start,row,nowrap,10px,10px);
   width: 100%;

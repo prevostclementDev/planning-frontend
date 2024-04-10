@@ -115,7 +115,7 @@ const monthToDisplay = computed(() => {
       border-left: 1px solid getColor(primary3);
       border-right: 1px solid getColor(primary3);
       padding: 4px;
-      cursor: grab;
+      cursor: move;
       user-select: none;
 
       &::first-letter {

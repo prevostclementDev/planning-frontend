@@ -35,8 +35,10 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
             },
             onImportSuccess : (data) => {
               listesTypeOptions.classes.step[3].props.dataset = data.data.insert
+              listesTypeOptions.classes.step[3].title = 'Verifier les champs après importation'
               updateStep()
-            }
+            },
+            importUrl : 'schoolspaces/users/import?readOnly=true'
           },
           components : chooseImportOrNot
         },
@@ -59,14 +61,14 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
     },
 
     'formation': {
-      title : 'Une formation',
+      title : 'Un Programme',
       stepNumber : 4,
       step : {
         1 : {
-          title : 'Créez votre formation',
+          title : 'Créez votre programme',
           props : {
             onsuccess : async (apiResult) => {
-              listesTypeOptions.formation.step[3].props.apiUrl = `/`
+              listesTypeOptions.formation.step[3].props.apiUrl = `schoolspaces/programs/${apiResult.data.id}/courses/list`
               updateStep()
             }
           },
@@ -83,8 +85,10 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
             },
             onImportSuccess : (data) => {
               listesTypeOptions.formation.step[3].props.dataset = data.data.insert
+              listesTypeOptions.formation.step[3].title = 'Verifier les champs après importation'
               updateStep()
-            }
+            },
+            importUrl : 'schoolspaces/courses/import'
           },
           components : chooseImportOrNot
         },
@@ -121,8 +125,10 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
             },
             onImportSuccess : (data) => {
               listesTypeOptions.intervenant.step[2].props.dataset = data.data.insert
+              listesTypeOptions.intervenant.step[2].title = 'Verifier les champs après importation'
               updateStep()
-            }
+            },
+            importUrl : 'schoolspaces/users/import?readOnly=true'
           },
           components : chooseImportOrNot
         },
@@ -144,7 +150,45 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
       }
     },
 
-    'cours' : { title : 'Un/des cours' },
+    'cours' : {
+      title : 'Un/des cours' ,
+      stepNumber : 3,
+      step : {
+        1 : {
+          title : 'Choisissez votre méthode',
+          props : {
+            onChoose : (choice) => {
+              if ( choice === 'table' ) {
+                delete listesTypeOptions.cours.step[2].props.dataset
+                updateStep()
+              }
+            },
+            onImportSuccess : (data) => {
+              listesTypeOptions.cours.step[2].props.dataset = data.data.insert
+              listesTypeOptions.cours.step[2].title = 'Verifier les champs après importation'
+              updateStep()
+            },
+            importUrl : 'schoolspaces/courses/import'
+          },
+          components : chooseImportOrNot
+        },
+        2: {
+          title : 'Ajouter des cours',
+          props : {
+            insertType : 'cours',
+            apiUrl : 'schoolspaces/courses/list',
+            onsuccess : async (apiResult) => {
+              updateStep()
+            }
+          },
+          components : formListInsert
+        },
+        3: {
+          title : 'Et voila ! Toutes les données sont créent',
+          components : end
+        }
+      }
+    },
 
     'classroom' : {
       title : 'Une/des salle(s)',
@@ -162,7 +206,8 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
             onImportSuccess : (data) => {
               listesTypeOptions.classroom.step[2].props.dataset = data.data.insert
               updateStep()
-            }
+            },
+            importUrl : 'schoolspaces/courses/import'
           },
           components : chooseImportOrNot
         },

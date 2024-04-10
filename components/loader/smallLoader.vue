@@ -19,7 +19,7 @@ defineProps({
     </defs>
     <g fill="none" fill-rule="evenodd">
       <g transform="translate(1 1)">
-        <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke-width="2">
+        <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke-width="2" stroke="#fff">
           <animateTransform
               attributeName="transform"
               type="rotate"
@@ -46,6 +46,12 @@ defineProps({
 svg {
   width: 30px;
   height: 30px;
+
+  &.full {
+    width: 50px;
+    height: 50px;
+
+  }
 
   &.blue {
 

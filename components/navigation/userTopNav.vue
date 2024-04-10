@@ -12,9 +12,9 @@ const authStore = useAuth();
 <template>
   <div id="userTopNav">
 
-    <div class="logo">
-      <img src="" alt="">
-    </div>
+<!--    <div class="logo">-->
+<!--      <img src="" alt="">-->
+<!--    </div>-->
 
     <div class="title">
       <p class="fw-700 h4">({{ authStore?.authState?.USER?.schoolspaces_name }}) Espace {{ authStore?.authState?.USER?.roles?.display_name }} - {{ authStore?.authState?.USER?.first_name }} {{ authStore.authState?.USER?.last_name }}</p>
@@ -56,7 +56,7 @@ const authStore = useAuth();
 
   .title {
     width: 50%;
-    text-align: center;
+    //text-align: center;
 
   }
 

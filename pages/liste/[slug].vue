@@ -1,24 +1,22 @@
 <script setup>
 import Ariane from "~/components/navigation/ariane.vue";
 import TableList from "~/components/tableList.vue";
-const { $timeFormat } = useNuxtApp()
 import {useFetch} from "~/stores/Fetch.js";
 import Button from "~/components/form/interaction/Button.vue";
 import {useNavBar} from "~/stores/ui/navbar";
 import { useCreateDonnees } from '~/stores/ui/createDonnees.js'
+import {useRouting} from "~/stores/routing.js";
 
+const useRoutingStore = useRouting()
+const { $timeFormat, $toast } = useNuxtApp()
 const useCreateDonneesStore = useCreateDonnees()
-
 const useNavBarStore = useNavBar()
-useNavBarStore.setNavBar(true)
-
 const useFetchStore = useFetch()
-const {$toast} = useNuxtApp()
+const route = useRoute()
 
 // Set page type
-const route = useRoute()
+useNavBarStore.setNavBar(false)
 const titlePage = ref('')
-
 let dataUrl = ''
 
 // Set data for render tableList
@@ -47,13 +45,18 @@ switch (route.params.slug) {
     titleArray = ['Nom du cours','Heure requise','Couleur']
     valueFormat = {
       'hours_required' : (value) => {
-        return $timeFormat.formatTime(value)
+        if ( value ) {
+          return $timeFormat.formatTime(value)
+        } else {
+          return 'Non spécifié'
+        }
       },
-      'color'  : (value) => ( value ) ? `<div style="background : ${value};" >${value}</div>` : 'Aucune couleur choisi',
+      'color'  : (value) => ( value ) ? `<div class="TableListColor" style="background : ${value};" ></div>` : 'Aucune couleur choisi',
     }
 
     actionAdd = (e) => {
-      console.log(e)
+      useCreateDonneesStore.state.parcours = 'cours'
+      navigateTo('/creer-des-donnees')
     }
     textButtonAdd = 'Ajouter des cours'
     break;
@@ -64,7 +67,8 @@ switch (route.params.slug) {
     titleArray = ['Nom du programme']
 
     actionAdd = (e) => {
-      console.log(e)
+      useCreateDonneesStore.state.parcours = 'formation'
+      navigateTo('/creer-des-donnees')
     }
     textButtonAdd = 'Ajouter un programme'
     break;
@@ -106,9 +110,8 @@ switch (route.params.slug) {
     titleArray = ['Nom de la salle','Capacité']
 
     actionAdd = (e) => {
-      console.log(e)
     }
-    textButtonAdd = 'Ajouter des salles'
+    textButtonAdd = null
     break;
 
   case 'mes-intervenants':
@@ -125,7 +128,8 @@ switch (route.params.slug) {
     }
 
     actionAdd = (e) => {
-      console.log(e)
+      useCreateDonneesStore.state.parcours = 'intervenant'
+      navigateTo('/creer-des-donnees')
     }
     textButtonAdd = 'Ajouter des intervenants'
     break;
@@ -143,10 +147,8 @@ switch (route.params.slug) {
       'civility' : (value) => ( value ) ? value : 'Non renseigné' ,
     }
 
-    actionAdd = (e) => {
-      console.log(e)
-    }
-    textButtonAdd = 'Ajouter des élèves'
+    actionAdd = (e) => {}
+    textButtonAdd = null
     break;
 
   default:
@@ -183,20 +185,24 @@ onUnmounted(() => {
 
 <template>
   <div>
-    <ariane :links="[{ text : 'Dashboard', url : '/' }, {text : 'Mes listes', url : '/listes'}, { text : titlePage }]" />
+    <ariane :links="[
+        { text : 'Dashboard', url : useRoutingStore.url.dashboard },
+        {text : 'Mes listes', url : useRoutingStore.url.dataList},
+        { text : titlePage }]"
+    />
 
     <div class="titleTop">
       <h2>{{ titlePage }}</h2>
-      <Button @click.prevent="actionAdd">{{ textButtonAdd }}</Button>
+      <Button v-if="textButtonAdd !== null" @click.prevent="actionAdd">{{ textButtonAdd }}</Button>
     </div>
 
     <table-list
-        v-if="state?.data[dataUrl]?.data?.array"
         :title="titleArray"
-        :data="state.data[dataUrl].data.array"
-        :pagination="state.data[dataUrl].data.pagination"
+        :data="state.data[dataUrl]?.data?.array"
+        :pagination="state.data[dataUrl]?.data?.pagination"
         :value-format="valueFormat"
         :custom-column="customColumn"
+        :data-is-loading="state.loading[dataUrl]"
     />
 
    </div>

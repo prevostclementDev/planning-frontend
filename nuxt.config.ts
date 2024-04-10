@@ -10,12 +10,14 @@ export default defineNuxtConfig({
     enabled: true,
 
     timeline: {
-      enabled: true
+      enabled: false
     }
   },
 
   // Client side rendering only
   ssr: false,
+
+  spaLoadingTemplate: true,
 
   // Env configuration
   runtimeConfig: {

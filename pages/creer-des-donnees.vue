@@ -3,11 +3,13 @@ import Ariane from "~/components/navigation/ariane.vue";
 import {useNavBar} from "~/stores/ui/navbar";
 import CreateDonnees from "~/components/form/createDonnees.vue";
 import { useCreateDonnees } from '~/stores/ui/createDonnees.js'
+import {useRouting} from "~/stores/routing";
 
 const useCreateDonneesStore = useCreateDonnees()
+const useRoutingStore = useRouting()
 
 const useNavBarStore = useNavBar()
-useNavBarStore.setNavBar(true)
+useNavBarStore.setNavBar(false)
 
 useHead(() => ({
   title : 'Créer des données'
@@ -19,7 +21,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <ariane :links="[{ text : 'Dashboard', url : '/' }, {text : 'Mes listes', url : '/listes'}, { text : 'Créer des données' }]" />
+  <ariane :links="[
+      { text : 'Dashboard', url : useRoutingStore.url.dashboard },
+      {text : 'Mes listes', url : useRoutingStore.url.dataList },
+      { text : 'Créer des données' }]"
+  />
 
   <div class="formContainer">
     <create-donnees />
