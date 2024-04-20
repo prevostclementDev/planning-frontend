@@ -13,7 +13,7 @@ export const usePlanning = defineStore('planningStore', () => {
   const { $timeFormat, $toast } = useNuxtApp()
 
   // Base url api
-  const baseUrl = '/schoolspaces/plannings'
+  const baseUrl = 'schoolspaces/plannings'
 
   // State entity
   const state = ref( abstractEntity.getBaseState({

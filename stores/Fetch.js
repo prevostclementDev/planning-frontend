@@ -124,9 +124,10 @@ export const useFetch = defineStore('fetch', () => {
       }
 
       // set error if is error
+      mutation[mutationType.SET_DATA](apiUrl, JSONResponse)
       mutation[mutationType.SET_ERROR](apiUrl, ! JSONResponse.statusBool)
       mutation[mutationType.SET_LOADING](apiUrl, false)
-      mutation[mutationType.SET_DATA](apiUrl, JSONResponse)
+
 
     }
 

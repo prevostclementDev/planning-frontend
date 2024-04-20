@@ -7,6 +7,8 @@ import {useRouting} from "~/stores/routing.js";
 import Sidebar from "~/components/planning/sidebar.vue";
 import {usePlanning} from "~/stores/entity/planning.js";
 
+const { $toast } = useNuxtApp()
+
 const planningStore = usePlanning()
 const useRoutingStore = useRouting()
 const useNavBarStore = useNavBar()
@@ -30,13 +32,17 @@ onMounted(async () => {
 
   await useFetchStore.action[useFetchStore.actionType.FETCH_DATA](urlApi)
 
-  if ( useFetchStore.state.error[urlApi] && useFetchStore.state.data[urlApi].code === 404 ) {
+  if ( useFetchStore.state.error[urlApi] && useFetchStore.state.data[urlApi]?.code === 404 ) {
     throw createError({
       statusCode: 404,
       statusMessage: 'Nous n\'avons pas trouvé votre planning',
       fatal : true
     })
     return
+  }
+
+  if ( useFetchStore.state.error[urlApi] ) {
+    $toast.error('Impossible de charger le planning')
   }
 
   titlePage.value = useFetchStore.state.data[urlApi].data.planning.name
@@ -68,6 +74,9 @@ onUnmounted(() => {
       </div>
       <div v-else-if="state?.data[urlApi]?.data?.planning?.name" class="planningPage">
         <planning :plannings-id="route.params.id" :start-date="state?.data[urlApi]?.data?.planning.start_date" :end-date="state?.data[urlApi]?.data?.planning.end_date" />
+      </div>
+      <div v-else-if="useFetchStore.state.error[urlApi]">
+        Une erreur est survenue
       </div>
 
     </div>
