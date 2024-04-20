@@ -1,5 +1,6 @@
 <script setup>
 import ParentsModal from "~/components/modal/parentsModal.vue";
+
 </script>
 
 <template>

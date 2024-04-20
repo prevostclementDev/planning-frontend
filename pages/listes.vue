@@ -3,6 +3,7 @@ import Ariane from "~/components/navigation/ariane.vue";
 import Folder from "~/components/icones/folder.vue";
 import {useNavBar} from "~/stores/ui/navbar";
 import {useRouting} from "~/stores/routing.js";
+import {useUsers} from "~/stores/entity/users.js";
 
 const useRoutingStore = useRouting()
 const useNavBarStore = useNavBar()
@@ -49,7 +50,7 @@ useHead(() => ({
 
       <nuxt-link :to="useRoutingStore.url.listeSingle('mes-programmes')" class="folder w-75">
         <folder />
-        <h3>Mes Programmes</h3>
+        <h3>Mes maquettes pédagogiques</h3>
       </nuxt-link>
 
       <nuxt-link :to="useRoutingStore.url.listeSingle('mes-classes')" class="folder">

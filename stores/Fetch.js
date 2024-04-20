@@ -106,6 +106,13 @@ export const useFetch = defineStore('fetch', () => {
 
       }
 
+      if ( _response.status === 304 ) {
+        mutation[mutationType.SET_ERROR](false)
+        mutation[mutationType.SET_DATA](apiUrl, {})
+        mutation[mutationType.SET_LOADING](apiUrl, false)
+        return;
+      }
+
       // format json
       const JSONResponse = await _response.json()
 

@@ -1,11 +1,15 @@
 <script setup>
 import Ariane from "~/components/navigation/ariane.vue";
-import TableList from "~/components/tableList.vue";
+import TableList from "~/components/listes/tableList.vue";
 import {useFetch} from "~/stores/Fetch.js";
 import Button from "~/components/form/interaction/Button.vue";
 import {useNavBar} from "~/stores/ui/navbar";
 import { useCreateDonnees } from '~/stores/ui/createDonnees.js'
 import {useRouting} from "~/stores/routing.js";
+import {useUsers} from "~/stores/entity/users.js";
+import {useClass} from "~/stores/entity/class.js";
+import {usePrograms} from "~/stores/entity/programs.js";
+import {useCourse} from "~/stores/entity/cours.js";
 
 const useRoutingStore = useRouting()
 const { $timeFormat, $toast } = useNuxtApp()
@@ -17,32 +21,33 @@ const route = useRoute()
 // Set page type
 useNavBarStore.setNavBar(false)
 const titlePage = ref('')
-let dataUrl = ''
 
 // Set data for render tableList
+let store;
 let titleArray = []
 let valueFormat = {}
 let customColumn = []
 
+// Button action
 let actionAdd;
 let textButtonAdd = 'Ajouter'
 
-// Data in table list
-const pagination = ref({})
-const data = ref([])
-
 // Page title
-useHead(() => ({
-  title : titlePage.value
-}))
+useHead(() => ({ title : titlePage.value }))
 
 // Set list type and format data for table List
 switch (route.params.slug) {
 
   case 'mes-cours':
+    // Page title
     titlePage.value = 'Mes cours'
-    dataUrl = 'schoolspaces/courses'
+
+    store = useCourse()
+
+    // Title displaying
     titleArray = ['Nom du cours','Heure requise','Couleur']
+
+    // specific render format value
     valueFormat = {
       'hours_required' : (value) => {
         if ( value ) {
@@ -54,6 +59,7 @@ switch (route.params.slug) {
       'color'  : (value) => ( value ) ? `<div class="TableListColor" style="background : ${value};" ></div>` : 'Aucune couleur choisi',
     }
 
+    // Action
     actionAdd = (e) => {
       useCreateDonneesStore.state.parcours = 'cours'
       navigateTo('/creer-des-donnees')
@@ -62,25 +68,36 @@ switch (route.params.slug) {
     break;
 
   case 'mes-programmes':
-    titlePage.value = 'Mes programmes'
-    dataUrl = 'schoolspaces/programs'
+    // Page title
+    titlePage.value = 'Mes maquettes pédagogiques'
+
+    store = usePrograms()
+
+    // Title displaying
     titleArray = ['Nom du programme']
 
+    // Action
     actionAdd = (e) => {
       useCreateDonneesStore.state.parcours = 'formation'
       navigateTo('/creer-des-donnees')
     }
-    textButtonAdd = 'Ajouter un programme'
+    textButtonAdd = 'Ajouter une maquette pédagogique'
     break;
 
   case 'mes-classes':
+
+    store = useClass()
+
+    // Page title
     titlePage.value = 'Mes classes'
-    dataUrl = 'schoolspaces/class'
+
+    // Title displaying
     titleArray = ['Nom de la classe']
+
+    // render custom column on table
     customColumn = [
       {
         title : 'Nombre élèves',
-
         value : async (id) => {
           const url = `schoolspaces/class/${id}/users`
           await useFetchStore.action[useFetchStore.actionType.FETCH_DATA](url)
@@ -92,32 +109,46 @@ switch (route.params.slug) {
           }
 
         }
-
       }
-
     ]
 
+    // Action
     actionAdd = (e) => {
       useCreateDonneesStore.state.parcours = 'classes'
       navigateTo('/creer-des-donnees')
     }
     textButtonAdd = 'Ajouter une classe'
+
     break;
 
   case 'mes-salles':
+    // Page title
     titlePage.value = 'Mes salles'
-    dataUrl = 'schoolspaces/classrooms'
+
+    // Title displaying
     titleArray = ['Nom de la salle','Capacité']
 
-    actionAdd = (e) => {
-    }
+    // Action
+    actionAdd = (e) => {console.log(e)}
     textButtonAdd = null
     break;
 
   case 'mes-intervenants':
+    // Page title
     titlePage.value = 'Mes intervenants'
-    dataUrl = 'schoolspaces/users?roles=3'
+
+    store = useUsers()
+    const teacherUri = store.baseUrl+'?roles=3'
+
+    if ( store.state.current_uri !== teacherUri ) {
+      store.mutation[store.mutationType.SET_CURRENT_URI](teacherUri)
+      store.mutation[store.mutationType.SET_MODAL_NAME]('teachers')
+    }
+
+    // Title displaying
     titleArray = ['Civilité','Prénom','Nom','Email']
+
+    // specific render format value
     valueFormat = {
       'roles' : (value) => null,
       'profile_picture' : (value) => null ,
@@ -127,6 +158,7 @@ switch (route.params.slug) {
       'civility' : (value) => ( value ) ? value : 'Non renseigné' ,
     }
 
+    // Action
     actionAdd = (e) => {
       useCreateDonneesStore.state.parcours = 'intervenant'
       navigateTo('/creer-des-donnees')
@@ -135,9 +167,22 @@ switch (route.params.slug) {
     break;
 
   case 'mes-eleves':
+
+    store = useUsers()
+    const elevesUrl = store.baseUrl+'?roles=2'
+
+    if ( store.state.current_uri !== elevesUrl ) {
+      store.mutation[store.mutationType.SET_CURRENT_URI](elevesUrl)
+      store.mutation[store.mutationType.SET_MODAL_NAME]('users')
+    }
+
+    // Page title
     titlePage.value = 'Mes élèves'
-    dataUrl = 'schoolspaces/users?roles=2'
+
+    // Title displaying
     titleArray = ['Civilité','Prénom','Nom','Email']
+
+    // specific render format value
     valueFormat = {
       'roles' : (value) => null,
       'profile_picture' : (value) => null ,
@@ -147,8 +192,10 @@ switch (route.params.slug) {
       'civility' : (value) => ( value ) ? value : 'Non renseigné' ,
     }
 
+    // Action
     actionAdd = (e) => {}
     textButtonAdd = null
+
     break;
 
   default:
@@ -157,18 +204,15 @@ switch (route.params.slug) {
       statusMessage: 'Nous n\'avons pas trouvé votre listes...',
       fatal : true
     })
-    break
 
 }
-
-const { state } = storeToRefs(useFetchStore)
 
 // On mounted get data
 onMounted(async () => {
 
-  await useFetchStore.action[useFetchStore.actionType.FETCH_DATA](dataUrl)
+  await store.action[store.actionType.GET_LIST]()
 
-  if ( useFetchStore.state.error[dataUrl] ) {
+  if ( useFetchStore.state.error[store.baseUrl] ) {
     $toast.error('Une erreur est survenue, nous allons vous rediriger')
     setTimeout(() => {
       navigateTo('/listes')
@@ -176,11 +220,6 @@ onMounted(async () => {
   }
 
 })
-
-onUnmounted(() => {
-  useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL](dataUrl)
-})
-
 </script>
 
 <template>
@@ -198,11 +237,10 @@ onUnmounted(() => {
 
     <table-list
         :title="titleArray"
-        :data="state.data[dataUrl]?.data?.array"
-        :pagination="state.data[dataUrl]?.data?.pagination"
+        :store="store"
         :value-format="valueFormat"
         :custom-column="customColumn"
-        :data-is-loading="state.loading[dataUrl]"
+        :data-is-loading="useFetchStore.state.loading[store.baseUrl]"
     />
 
    </div>

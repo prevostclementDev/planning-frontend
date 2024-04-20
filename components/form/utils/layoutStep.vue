@@ -14,7 +14,7 @@ defineProps({
 <template>
   <div class="layoutStep">
     <div class="containsStep" v-for="i in stepNumber">
-      <div :class="(i === activeStep || i < activeStep) ? 'stepIndicator active' : 'stepIndicator'" :step="i">{{ i }}</div>
+      <div :class="(i === activeStep || i < activeStep) ? 'stepIndicator active' : 'stepIndicator'" :step="i"><span> {{ i }} </span></div>
       <div
           v-if="stepNumber !== i"
           :class="(i === activeStep) ? 'separator active' : ( i < activeStep ) ? 'separator finish' : 'separator'"
@@ -41,9 +41,39 @@ defineProps({
       height: 32px;
       color: white;
       @include flex();
+      position: relative;
+      overflow: hidden;
+
+      span {
+        position: relative;
+        z-index: 1;
+
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        @include bgColor(primary3);
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        transform-origin: left center;
+        transform: scaleX(0);
+        transition: .3s ease-in-out transform;
+        transition-duration: .3s;
+
+      }
 
       &.active {
-        @include bgColor(primary3);
+
+        &::before {
+          transform: scaleX(1);
+
+        }
+
       }
 
     }

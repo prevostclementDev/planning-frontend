@@ -1,5 +1,6 @@
 <script setup>
 import {useNavBar} from "~/stores/ui/navbar";
+import VueDatePicker from '@vuepic/vue-datepicker';
 
 const useNavBarStore = useNavBar()
 useNavBarStore.setNavBar(true)
@@ -7,6 +8,7 @@ useNavBarStore.setNavBar(true)
 useHead(() => ({
   title : 'Dashboard'
 }))
+
 </script>
 
 <template>

@@ -1,8 +1,15 @@
 <script setup>
 import { useModal } from '~/stores/ui/modal.js'
-import UpdateUsers from "~/components/modal/child/updateUsers.vue";
-import PlanningModal from "~/components/modal/child/planningModal.vue";
+import UpdateUsers from "~/components/users/usersModal.vue";
+import PlanningModal from "~/components/planning/planningModal.vue";
 import ConfirmDelete from "~/components/modal/child/confirmDelete.vue";
+import UsersModal from "~/components/users/usersModal.vue";
+import TeachersModal from "~/components/users/teachersModal.vue";
+import ClassModal from "~/components/class/classModal.vue";
+import ProgramsModal from "~/components/programs/programsModal.vue";
+import CoursesModal from "~/components/courses/coursesModal.vue";
+import EventsModal from "~/components/events/eventsModal.vue";
+import AddSkillsModal from "~/components/users/teachers/addSkillsModal.vue";
 const modalStore = useModal();
 
 function closeModalOnClickParent(e) {
@@ -23,6 +30,13 @@ function closeModalOnClickParent(e) {
       <planning-modal v-else-if="modalStore.state.openModal === 'planningModal'" v-bind="modalStore.state.propsModal" />
       <loader-small-loader v-else-if="modalStore.state.openModal === 'loading'" custom-class="full" />
       <confirm-delete v-else-if="modalStore.state.openModal === 'delete'" v-bind="modalStore.state.propsModal"/>
+      <users-modal v-else-if="modalStore.state.openModal === 'users'" v-bind="modalStore.state.propsModal"/>
+      <teachers-modal v-else-if="modalStore.state.openModal === 'teachers'" v-bind="modalStore.state.propsModal" />
+      <class-modal v-else-if="modalStore.state.openModal === 'class'" v-bind="modalStore.state.propsModal"/>
+      <programs-modal v-else-if="modalStore.state.openModal === 'programs'" v-bind="modalStore.state.propsModal" />
+      <courses-modal  v-else-if="modalStore.state.openModal === 'courses'" v-bind="modalStore.state.propsModal" />
+      <events-modal  v-else-if="modalStore.state.openModal === 'events'" v-bind="modalStore.state.propsModal" />
+      <add-skills-modal v-else-if="modalStore.state.openModal === 'addSkillTeacher'" v-bind="modalStore.state.propsModal"/>
 
     </div>
   </transition>

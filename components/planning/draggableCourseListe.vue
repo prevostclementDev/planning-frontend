@@ -27,6 +27,10 @@ onMounted(async () => {
   });
 
 })
+
+onUnmounted(() => {
+  useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL](programsUrl)
+})
 </script>
 
 <template>
@@ -50,8 +54,9 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .listes {
-  max-height: 100%;
+  max-height: calc(100% - 80px);
   overflow: auto;
+  padding: 1rem 0;
 
   h3 {
     margin: 1.4rem 1rem 1rem;

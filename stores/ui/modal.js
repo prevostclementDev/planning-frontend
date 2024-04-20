@@ -45,8 +45,10 @@ export const useModal = defineStore('modal', () => {
 
   const action = ({
 
-    [actionType.OPEN_MODAL](modal) {
+    [actionType.OPEN_MODAL](modal, props = null) {
       mutation[mutationType.SET_OPEN_MODAL](modal)
+
+      if (props) mutation[mutationType.SET_PROPS_MODAL](props)
     },
 
     [actionType.CLOSE_MODAL]() {
@@ -54,9 +56,20 @@ export const useModal = defineStore('modal', () => {
       mutation[mutationType.SET_PROPS_MODAL]({})
     },
 
-    [actionType.OPEN_CONFIRM_DELETE](url) {
+    [actionType.OPEN_CONFIRM_DELETE](url, ondelete = null, ondeleteparams = '') {
       mutation[mutationType.SET_OPEN_MODAL]('delete')
-      mutation[mutationType.SET_PROPS_MODAL]({ deleteUrl : url })
+
+      let args = { deleteUrl : url }
+
+      if ( ondelete ) {
+        args = {
+          ...args,
+          ondelete : ondelete,
+          ondeleteparams : ondeleteparams
+        }
+      }
+
+      mutation[mutationType.SET_PROPS_MODAL](args)
     }
 
   })

@@ -1,4 +1,6 @@
 @import "formStepByStep";
+@import "colorPicker/override";
+@import "datePicker/override";
 
 // global container for input
 .input-container {
@@ -14,6 +16,7 @@
 
   label, input {
     width: 100%;
+
   }
 
 }

@@ -2,11 +2,12 @@ import { defineStore } from 'pinia'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin, {Draggable} from '@fullcalendar/interaction'
 import multiMonthPlugin from '@fullcalendar/multimonth'
-import {isObject} from "vue-js-modal/src/utils/types.js";
 import {useFetch} from "~/stores/Fetch.js";
+import { useModal } from "~/stores/ui/modal.js";
 
 export const useCalendar = defineStore('calendar', () => {
 
+  const modalStore = useModal()
   const useFetchStore = useFetch()
   const { $toast } = useNuxtApp()
   const { $timeFormat } = useNuxtApp()
@@ -55,7 +56,8 @@ export const useCalendar = defineStore('calendar', () => {
 
     // Event customization
     eventClick : (info) => {
-      console.log(info)
+      modalStore.mutation[modalStore.mutationType.SET_PROPS_MODAL]({ event : { instance : info.event._instance ,def : info.event._def } })
+      modalStore.action[modalStore.actionType.OPEN_MODAL]('events')
     },
     eventContent : (args) => {
       const [time1, time2] = args.timeText.split(' - ')
@@ -69,7 +71,10 @@ export const useCalendar = defineStore('calendar', () => {
       const totalMinutesDuration = minutes2 - minutes1
 
       return { html : `
-          <div class="doriane-event-custom s-${totalMinutesDuration}">
+          <div class="
+          doriane-event-custom s-${totalMinutesDuration}
+          id-${ args.event.extendedProps.extraParams.id_in_db }
+          ">
               <div class="colorLine" style="background : ${args.event.extendedProps.extraParams.color};"></div>
               <div class="content-doriane-event">
                   <div class="time">${args.timeText}</div>
@@ -84,9 +89,10 @@ export const useCalendar = defineStore('calendar', () => {
     },
     datesSet : async (data) => {
       // Set current date
+
       mutation[mutationType.SET_CURRENT_DATE](state.value.calendar?.getApi().currentData.currentDate)
 
-      if ( state.value.calendarId !== 0 ) {
+      if ( state.value.calendarId !== 0 && state.value.calendar ) {
 
         // get current slot
         const month = ((data.start.getMonth() + 1) < 10 ) ? "0"+ (data.start.getMonth() + 1) : (data.start.getMonth() + 1)
@@ -112,6 +118,11 @@ export const useCalendar = defineStore('calendar', () => {
         useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL](url)
 
       }
+
+      // Callback when data is set
+      Object.keys(state.value.callbackDataSet).forEach(key => {
+        state.value.callbackDataSet[key]()
+      })
 
     },
     eventReceive  : async ( args ) => {
@@ -144,8 +155,10 @@ export const useCalendar = defineStore('calendar', () => {
           $toast.success('Cours enregistré',{ transition: $toast.TRANSITIONS.ZOOM, position: $toast.POSITION.BOTTOM_CENTER, autoClose : 500 });
           args.event._def.extendedProps.extraParams.id_in_db = useFetchStore.state.data[url].data.id
           action[actionType.SET_PROGRAM_FROM_API](state.value.calendarId)
+          useFetchStore.action[useFetchStore.actionType.FETCH_DATA](`schoolspaces/plannings/${state.value.calendarId}/conflicts`)
 
-        } else {
+        }
+        else {
 
           args.event.remove()
           $toast.error('Nous n\'arrivons pas à créer votre cours');
@@ -154,7 +167,8 @@ export const useCalendar = defineStore('calendar', () => {
 
         useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL](url)
 
-      } else {
+      }
+      else {
         args.event.remove()
         $toast.error('Nous n\'arrivons pas à créer votre cours');
       }
@@ -185,6 +199,7 @@ export const useCalendar = defineStore('calendar', () => {
         if ( ! useFetchStore.state.error[url] ) {
 
           $toast.success('Cours sauvegardé',{ transition: $toast.TRANSITIONS.ZOOM, position: $toast.POSITION.BOTTOM_CENTER, autoClose : 500 });
+          useFetchStore.action[useFetchStore.actionType.FETCH_DATA](`schoolspaces/plannings/${state.value.calendarId}/conflicts`)
           action[actionType.SET_PROGRAM_FROM_API](state.value.calendarId)
 
         } else {
@@ -217,6 +232,7 @@ export const useCalendar = defineStore('calendar', () => {
     calendarOptions : initialOptions,
     calendar : null,
     programs : [],
+    callbackDataSet : {}
   })
 
   // On change set current date
@@ -233,17 +249,50 @@ export const useCalendar = defineStore('calendar', () => {
     SET_CURRENT_DATE : 'SET_CURRENT_DATE',
     SET_OPTIONS : 'SET_CALENDAR_OPTIONS',
     SET_CALENDAR_ID : 'SET_CALENDAR_ID',
-    SET_PROGRAM : 'SET_PROGRAM'
+    SET_PROGRAM : 'SET_PROGRAM',
+    SET_CALLBACK_DATA_SET : 'SET_CALLBACK_DATASET',
+    REMOVE_CALLBACK_DATA_SET : 'RM_CALLBACK_DATASET',
+    INIT_OPTIONS : 'INIT_OPTIONS_FULL_CALENDAR'
   }
 
   // Mutation
   const mutation = ({
+
+    [mutationType.REMOVE_CALLBACK_DATA_SET](key) {
+      const { [key]: _, ...rest } = state.value.callbackDataSet;
+      state.value = {
+        ...state.value,
+        callbackDataSet : {
+          ...rest
+        }
+      }
+    },
+
+    [mutationType.SET_CALLBACK_DATA_SET](key,func) {
+      state.value = {
+        ...state.value,
+        callbackDataSet : {
+          ...state.value.callbackDataSet,
+          [key] : func
+        }
+      }
+    },
 
     [mutationType.SET_CALENDAR](calendar,customOption = {}) {
       state.value = {
         ...state.value,
         calendar : calendar,
         calendarCurrentDate: calendar.getApi().currentData.currentDate,
+        calendarOptions : {
+          ...initialOptions,
+          ...customOption
+        }
+      }
+    },
+
+    [mutationType.INIT_OPTIONS](customOption = {}) {
+      state.value = {
+        ...state.value,
         calendarOptions : {
           ...initialOptions,
           ...customOption
@@ -289,7 +338,8 @@ export const useCalendar = defineStore('calendar', () => {
   // ********************************
   // Type
   const actionType = {
-    SET_PROGRAM_FROM_API : 'GET_PROGRAM_API'
+    SET_PROGRAM_FROM_API : 'GET_PROGRAM_API',
+    SEE_EVENTS_CONFLICTS : 'SET_EVENT_BORDER_SEE'
   }
 
   const action = ({
@@ -311,9 +361,54 @@ export const useCalendar = defineStore('calendar', () => {
           useFetchStore.state.data[url].data.programs
         )
 
-        useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL](url)
 
       }
+
+    },
+
+    [actionType.SEE_EVENTS_CONFLICTS](date,idSlot){
+
+      // on change la date du calendrier
+      state.value.calendar.getApi().gotoDate(date)
+
+      const uniqid = Date.now()
+
+      // callback on get date api call
+      mutation[mutationType.SET_CALLBACK_DATA_SET](
+        uniqid,
+        () => {
+
+          // waiting fullcalendar render (no alternative found for the moment)
+          setTimeout(() => {
+            const event = document.querySelector('.doriane-event-custom.id-'+idSlot)
+            const scrollToElement = document.querySelector('.selectorMonthCalendar')
+
+            if ( event ) {
+
+              event.classList.add('view-conflict')
+
+              // Scroll to planning view
+              if ( scrollToElement ) {
+                scrollToElement.scrollIntoView({ behavior : "smooth" })
+              }
+
+              // Remove after 8 secondes effect view
+              setTimeout(() => {
+                if ( event.classList.contains('view-conflict') ) {
+                  event.classList.remove('view-conflict')
+                }
+              },8000)
+
+            }
+
+            // remove callback
+            mutation[mutationType.REMOVE_CALLBACK_DATA_SET](
+              uniqid,
+            )
+          },200)
+
+        }
+      )
 
     }
 

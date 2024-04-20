@@ -151,7 +151,8 @@ switch (props.insertType) {
       inputModel : model,
       modelOn : tempModelOn,
       specificField : {
-        'color' : { type : 'color' }
+        'color' : { type : 'color' },
+        'hours_required' : { type : 'hours' }
       }
     }
 

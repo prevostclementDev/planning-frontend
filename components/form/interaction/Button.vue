@@ -37,11 +37,6 @@ button {
 
   }
 
-  &.small {
-    @include interaction(button-primary-small)
-
-  }
-
   &.secondary {
     @include interaction(button-secondary);
 
@@ -49,6 +44,11 @@ button {
 
   &.delete {
     @include interaction(button-delete);
+
+  }
+
+  &.small {
+    @include interaction(button-small)
 
   }
 
