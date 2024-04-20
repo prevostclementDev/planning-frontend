@@ -53,6 +53,7 @@ $colors : (
   'fourth4' :  #d08715,
   'error0' : #E54545,
   'valid0' : #0FAC1F,
+  'warning0' : #F3B95F,
   'text' : #303741,
 
 );
@@ -170,28 +171,11 @@ $interaction : (
         )
       )
   ),
-  button-primary-small : map-merge(
+  button-small : map-merge(
       map-get($typographies,textBold),
       (
         padding: .5rem 1rem,
-        outline: none,
-        font-family : $fontSecondary,
-        border: 1px solid map-get($colors,'primary4'),
-        background-color: map-get($colors,'primary4'),
-        color: map-get($colors,'light1'),
-        border-radius: 6px,
-        font-weight: 600,
         margin: 0,
-        cursor: pointer,
-        transition : 0.3s ease-in-out all,
-        hover : (
-          background-color : map-get($colors,'primary2'),
-          border: 1px solid map-get($colors,'primary2'),
-        ),
-        focus : map-merge(
-            map-get($effects,shadowFocus),
-            ( outline : 1px solid map-get($colors, primary1) )
-        )
       )
   ),
   button-secondary : map-merge(

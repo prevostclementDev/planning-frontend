@@ -52,6 +52,16 @@ const props = defineProps({
     required : false,
     default : false
   },
+  onfocusin : {
+    type : Function,
+    default : () => {},
+    required : false
+  },
+  onfocusout : {
+    type : Function,
+    default : () => {},
+    required : false
+  },
   modelValue : {}
 })
 
@@ -72,6 +82,8 @@ const refType = ref(props.type);
           :value="(defaultValue !== '') ? defaultValue :modelValue"
           @input="$emit('update:modelValue', $event.target.value)"
           :disabled="disabled"
+          @focusin="onfocusin"
+          @focusout="onfocusout"
       >
       <div class="action" v-if="props.type === 'password'">
         <svg v-if="refType === 'password'" @click="refType = 'text'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -130,6 +142,15 @@ label {
 
     input {
       border-color: getColor(error0);
+
+    }
+
+  }
+
+  &.nolabel {
+
+    .title {
+      display: none;
 
     }
 

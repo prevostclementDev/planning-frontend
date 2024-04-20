@@ -18,8 +18,7 @@ const useNavBarStore = useNavBar()
     <ul>
 
       <li class="items logo">
-        <logo />
-        <span class="f-p-900 fs-m c-primary2">Doriane</span>
+        <logo  :type="(useNavBarStore.isFullNavBar) ? 'default' : 'full'"/>
       </li>
 
       <li class="items">
@@ -135,7 +134,6 @@ const useNavBarStore = useNavBar()
 <style scoped lang="scss">
 .navigation-menu {
   padding: 1rem 1.5rem;
-  border-right: 1px solid #EAEAEA;
   @include bgColor(primary4);
   height: 100%;
   width: 105px;
@@ -230,13 +228,6 @@ const useNavBarStore = useNavBar()
 
     &.logo {
       margin: .5rem 0 2.5rem;
-      @include flex();
-
-      span {
-        margin-left: 1rem;
-        display: none;
-
-      }
 
     }
 

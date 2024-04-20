@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import chooseType from '~/components/form/parts/createDonnees/chooseType.vue'
-import formClass from "~/components/form/formClass.vue";
+import formClass from "~/components/class/formClass.vue";
 import formListInsert from "~/components/form/formListInsert.vue";
 import end from "~/components/form/parts/createDonnees/end.vue";
 import chooseImportOrNot from "~/components/form/parts/createDonnees/chooseImportOrNot.vue";
-import formFormation from "~/components/form/formFormation.vue";
+import formPrograms from "~/components/programs/formPrograms.vue";
 
 export const useCreateDonnees = defineStore('createDonnees', () => {
 
@@ -61,21 +61,21 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
     },
 
     'formation': {
-      title : 'Un Programme',
+      title : 'Une maquette pédagogique',
       stepNumber : 4,
       step : {
         1 : {
-          title : 'Créez votre programme',
+          title : 'Créez votre maquette pédagogique',
           props : {
             onsuccess : async (apiResult) => {
               listesTypeOptions.formation.step[3].props.apiUrl = `schoolspaces/programs/${apiResult.data.id}/courses/list`
               updateStep()
             }
           },
-          components : formFormation
+          components : formPrograms
         },
         2 : {
-          title : 'Ajouter des cours dans votre nouvelle formation ?',
+          title : 'Ajouter des cours dans votre nouvelle maquette pédagogique ?',
           props : {
             onChoose : (choice) => {
               if ( choice === 'table' ) {

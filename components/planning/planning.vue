@@ -5,6 +5,7 @@ import WeekSelector from "~/components/planning/action/weekSelector.vue";
 import GoBack from "~/components/planning/action/updateDatePlanning.vue";
 import Update from "~/components/icones/update.vue";
 import UpdateDatePlanning from "~/components/planning/action/updateDatePlanning.vue";
+import Lists from "~/components/planning/conflicts/lists.vue";
 
 const { $timeFormat } = useNuxtApp()
 
@@ -26,6 +27,8 @@ const props = defineProps({
   }
 })
 
+const route = useRoute()
+
 const startDateObject = new Date(props.startDate)
 const endDateObject = new Date(props.endDate)
 
@@ -33,6 +36,13 @@ const calendar = ref(null);
 const calendarStore = useCalendar();
 
 calendarStore.mutation[calendarStore.mutationType.SET_CALENDAR_ID](props.planningsId)
+calendarStore.mutation[calendarStore.mutationType.INIT_OPTIONS]({
+  defaultDate : props.startDate,
+  validRange: {
+    start: props.startDate,
+    end: props.endDate
+  },
+})
 
 const nowDate = computed(() => {
   const date = new Date(calendarStore.state.calendarCurrentDate)
@@ -42,21 +52,22 @@ const nowDate = computed(() => {
 
 onMounted(() => {
 
-  calendarStore.mutation[calendarStore.mutationType.SET_CALENDAR](
-      calendar.value,
-      {
-        validRange: {
-          start: props.startDate,
-          end: props.endDate
-        },
-      }
-  )
+  calendarStore.mutation[calendarStore.mutationType.SET_CALENDAR]( calendar.value )
+
+  if ( route.query.conflict ) {
+
+    const [ date, idSlot ] = route.query.conflict.split('|')
+    calendarStore.action[calendarStore.actionType.SEE_EVENTS_CONFLICTS](date, idSlot)
+
+  }
 
 })
 </script>
 
 <template>
   <section>
+
+    <lists :id-planning="planningsId" />
 
     <div class="date">
       <h3>{{ nowDate }}</h3>
@@ -77,21 +88,27 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.date {
-  @include flex(space-between);
-  margin: 0 0 1rem;
 
-  h3 {
+section {
+  width: 100%;
 
-    &::first-letter {
-      text-transform: uppercase;
+  .date {
+    @include flex(space-between);
+    margin: 0 0 1rem;
+
+    h3 {
+
+      &::first-letter {
+        text-transform: uppercase;
+
+      }
 
     }
 
-  }
+    .action {
+      width: fit-content;
 
-  .action {
-    width: fit-content;
+    }
 
   }
 

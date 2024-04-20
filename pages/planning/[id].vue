@@ -1,14 +1,13 @@
 <script setup>
 import {useFetch} from "~/stores/Fetch.js";
-import DraggableCourseListe from "~/components/planning/draggableCourseListe.vue";
 import Planning from "~/components/planning/planning.vue";
-import Tabs from "~/components/form/interaction/Tabs.vue";
-import ActionPanel from "~/components/planning/actionPanel.vue";
 import Ariane from "~/components/navigation/ariane.vue";
 import {useNavBar} from "~/stores/ui/navbar";
 import {useRouting} from "~/stores/routing.js";
 import Sidebar from "~/components/planning/sidebar.vue";
+import {usePlanning} from "~/stores/entity/planning.js";
 
+const planningStore = usePlanning()
 const useRoutingStore = useRouting()
 const useNavBarStore = useNavBar()
 useNavBarStore.setNavBar(false)
@@ -21,7 +20,7 @@ useHead(() => ({
   title : titlePage.value
 }))
 
-const urlApi = `/schoolspaces/plannings/${route.params.id}`
+const urlApi = `${planningStore.baseUrl}/${route.params.id}`
 
 const useFetchStore = useFetch()
 
@@ -51,50 +50,85 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <div class="pagePlanningLayout">
 
-  <ariane :links="[
+    <div class="titlePlanning">
+      <ariane :links="[
       { text : 'Dashboard', url : useRoutingStore.url.dashboard },
       {text : 'Mes plannings', url : useRoutingStore.url.planningsList },
       { text : titlePage }]"
-  />
-
-  <h2> {{ titlePage }} </h2>
-
-  <div v-if="state.loading[urlApi]" class="loading">
-    <loader-small-loader custom-class="blue"/>
-  </div>
-  <div v-else-if="state?.data[urlApi]?.data?.planning?.name" class="planningPage">
-
-    <div class="planningContainer">
-      <planning :plannings-id="route.params.id" :start-date="state?.data[urlApi]?.data?.planning.start_date" :end-date="state?.data[urlApi]?.data?.planning.end_date" />
+      />
+      <h2> {{ titlePage }} </h2>
     </div>
 
-    <div class="actionContainer">
-      <sidebar :planningId="route.params.id" />
+    <div class="contentPlanning">
+
+      <div v-if="state.loading[urlApi]" class="loading">
+        <loader-small-loader custom-class="blue"/>
+      </div>
+      <div v-else-if="state?.data[urlApi]?.data?.planning?.name" class="planningPage">
+        <planning :plannings-id="route.params.id" :start-date="state?.data[urlApi]?.data?.planning.start_date" :end-date="state?.data[urlApi]?.data?.planning.end_date" />
+      </div>
+
     </div>
 
+    <div class="sidebarPlanning">
+      <div class="sidebar-wrapper">
+        <sidebar :planningId="route.params.id" :planning="useFetchStore.state.data[urlApi]" />
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.loading {
-  @include flex();
-  height: 20vh;
+.pagePlanningLayout {
+  @include grid(
+    80px 1fr,
+    calc(100vw - 350px - 105px - 4rem) 350px,
+    "title sidebar"
+    "planning sidebar"
+  );
 
-}
-
-.planningPage {
-  @include flex(flex-start,flex-start,row,nowrap,10px,10px);
-  width: 100%;
-  margin-top: 1.5rem;
-
-  .planningContainer {
-    width: calc(100% - 350px);
+  .titlePlanning {
+    grid-area: title;
 
   }
 
-  .actionContainer {
-    width: 350px;
+  .contentPlanning {
+    grid-area: planning;
+
+    .loading {
+      @include flex();
+      height: 20vh;
+
+    }
+
+    .planningPage {
+      @include flex(flex-start,flex-start,row,nowrap,10px,10px);
+      width: 100%;
+
+      .planningContainer {
+        width: calc(100% - 350px);
+
+      }
+
+      .actionContainer {
+        width: 350px;
+
+      }
+
+    }
+
+  }
+
+  .sidebarPlanning {
+    grid-area: sidebar;
+
+    .sidebar-wrapper {
+      position: sticky;
+      top: 0;
+
+    }
 
   }
 

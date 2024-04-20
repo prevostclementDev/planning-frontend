@@ -4,11 +4,13 @@ import Button from "~/components/form/interaction/Button.vue";
 import Delete from "~/components/icones/delete.vue";
 import Update from "~/components/icones/update.vue";
 import {useModal} from "~/stores/ui/modal";
-import {usePlanningForm} from "~/stores/form/planning";
+import {usePlanning} from "~/stores/entity/planning";
 import {useRouting} from "~/stores/routing";
+import {useFetch} from "~/stores/Fetch";
 
+const useFetchStore = useFetch()
 const useRoutingStore = useRouting()
-const usePlanningStore = usePlanningForm()
+const usePlanningStore = usePlanning()
 const useModalStore = useModal()
 
 const props = defineProps({
@@ -39,6 +41,15 @@ function openPlanningModal(){
 
   useModalStore.action[useModalStore.actionType.OPEN_MODAL]('planningModal')
 }
+
+function openDeleteModal(){
+  useModalStore.action[useModalStore.actionType.OPEN_CONFIRM_DELETE](
+      usePlanningStore.baseUrl+'/'+props.planning.id,
+      (params) => {
+        usePlanningStore.action[usePlanningStore.actionType.GET_LIST](true)
+      },
+  )
+}
 </script>
 
 <template>
@@ -50,7 +61,7 @@ function openPlanningModal(){
       <h4>{{ planning.name }}</h4>
       <div class="action">
         <Button custom-class="clear" @click.prevent="openPlanningModal()"> <update /> </Button>
-        <Button custom-class="clear" @click.prevent="useModalStore.action[useModalStore.actionType.OPEN_CONFIRM_DELETE]('/schoolspaces/planning/'+planning.id)"> <delete /> </Button>
+        <Button custom-class="clear" @click.prevent="openDeleteModal"> <delete /> </Button>
       </div>
     </div>
 
@@ -63,7 +74,7 @@ a {
   @include flex(flex-start,center,row,nowrap,1rem,1rem);
   border-radius: 20px;
   text-decoration: none;
-  width: calc(100% / 3 - 20px);
+  width: calc(100% / 2 - 20px);
   padding: 2rem;
   transition: .3s ease-in-out all;
 

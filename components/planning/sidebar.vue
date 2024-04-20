@@ -6,6 +6,10 @@ import DraggableCourseListe from "~/components/planning/draggableCourseListe.vue
 const displayRightPanel = ref('programs')
 
 const props = defineProps({
+  planning : {
+    type : Object,
+    required : true
+  },
   planningId : {
     type : Number,
     required : true
@@ -14,15 +18,18 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="sidebarPlanning">
+  <div class="innerSidebarPlanning">
     <Tabs v-model="displayRightPanel" :action="{ programs : 'Le programme', action : 'Action' }" :default-value="displayRightPanel" />
 
-    <action-panel v-show="displayRightPanel === 'action'" />
+    <action-panel v-show="displayRightPanel === 'action'" :planning="planning" />
     <draggable-course-liste v-show="displayRightPanel === 'programs'" :id-calendar="planningId" />
   </div>
 </template>
 
 <style scoped lang="scss">
-.sidebarPlanning {
+.innerSidebarPlanning {
+  height: calc(100vh - 80px);
+  padding: 1rem 0 0 1rem;
+
 }
 </style>

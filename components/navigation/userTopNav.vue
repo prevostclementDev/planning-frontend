@@ -3,6 +3,7 @@ import Notification from "~/components/icones/notification.vue";
 import Parametre from "~/components/icones/parametre.vue";
 import {useAuth} from "~/stores/Auth";
 import Button from "~/components/form/interaction/Button.vue";
+import Loggout from "~/components/icones/loggout.vue";
 
 const profilActionOpen = ref(false);
 const authStore = useAuth();
@@ -32,7 +33,10 @@ const authStore = useAuth();
       <div class="user-profil" @click="profilActionOpen = !profilActionOpen">
         <button><img src="" alt=""></button>
         <div v-if="profilActionOpen" class="profil-action">
-          <a href="/" @click.prevent="authStore.logout()">Se déconnecter</a>
+          <a href="/" @click.prevent="authStore.logout()">
+            <span>Se déconnecter</span>
+            <loggout />
+          </a>
         </div>
       </div>
 
@@ -87,15 +91,35 @@ const authStore = useAuth();
         display: inline-block;
         position: absolute;
         right: 0;
-        bottom: -40px;
+        bottom: -50px;
         padding: 8px;
         border-radius: 10px;
         width: 200px;
         @include bgColor(light2);
-        border: 1px solid getColor(grey8);
+        border: 1px solid getColor(primary4,.2);
         @include effect(shadow);
         text-align: right;
 
+        a {
+          @include flex(flex-end);
+          padding: .5rem;
+          text-decoration: none;
+          border-radius: 8px;
+          transition : 0.3s ease-in-out all;
+
+          &:hover {
+            @include bgColor(primary0,.6);
+
+          }
+
+          span,svg {
+            margin-right: .5rem;
+
+          }
+
+
+
+        }
 
       }
 

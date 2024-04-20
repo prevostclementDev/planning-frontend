@@ -126,6 +126,12 @@
       @include flex();
       height: 100%;
 
+      &.view-conflict {
+        border: 4px solid getColor(error0);
+        border-radius: 10px;
+
+      }
+
       .colorLine {
         width: 10px;
         height: 100%;
@@ -138,8 +144,10 @@
         width: calc(100% - 10px);
         padding: 5px 5px 5px 10px;
         height: 100%;
+        @include bgColor(grey9);
         @include flex(center,flex-start,column,wrap,10px,0px);
-        color: black;
+        color: getColor(grey1);
+        border-radius: 10px;
 
         .title {
           font-size: calc( getFontSize(sm) - .3rem );

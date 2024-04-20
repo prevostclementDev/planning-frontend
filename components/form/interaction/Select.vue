@@ -116,6 +116,15 @@ const props = defineProps({
 
   }
 
+  &.notitle {
+
+    .title {
+      display: none;
+
+    }
+
+  }
+
 }
 
 </style>

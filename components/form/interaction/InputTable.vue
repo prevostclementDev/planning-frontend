@@ -5,6 +5,7 @@ import Button from "~/components/form/interaction/Button.vue";
 import Add from "~/components/icones/add.vue";
 import Select from "~/components/form/interaction/Select.vue";
 import {ColorPicker} from "vue3-colorpicker";
+import DatePicker from "~/components/form/interaction/DatePicker.vue";
 
 const props = defineProps({
   inputTitle: {
@@ -48,6 +49,7 @@ const arrayName = Object.keys(props.inputModel);
     <tr v-for="(data, key) in modelOn">
       <td v-for="id in arrayName">
         <div v-if="id !== 'errors'">
+
           <Select
               v-if="specificField[id] && specificField[id].type === 'select'"
               v-model="data[id]"
@@ -57,7 +59,22 @@ const arrayName = Object.keys(props.inputModel);
           >
             <option v-for="(options, key) in specificField[id].data" :value="key">{{ options }}</option>
           </Select>
-          <color-picker v-else-if="specificField[id] && specificField[id].type === 'color'" v-model:pureColor="data[id]"/>
+
+          <color-picker
+              v-else-if="specificField[id] && specificField[id].type === 'color'"
+              v-model:pureColor="data[id]"
+          />
+
+          <DatePicker
+              v-else-if="specificField[id] && specificField[id].type === 'hours'"
+              custom-class="tableView"
+              v-model="data[id]"
+              model-type="HH:mm:ss"
+              type="time"
+              :is-error="(data.errors !== null && data.errors[id])"
+              :errors="(data.errors !== null && data.errors[id]) ? [data.errors[id]] : []"
+          />
+
           <Input
               v-else
               :type="( specificField[id] && specificField[id].type ) ? specificField[id].type : 'text' "
@@ -67,6 +84,7 @@ const arrayName = Object.keys(props.inputModel);
               :is-error="(data.errors !== null && data.errors[id])"
               :errors="(data.errors !== null && data.errors[id]) ? [data.errors[id]] : []"
           />
+
         </div>
       </td>
       <Button custom-class="clear" @click.prevent="modelOn.splice( key, 1 )"> <delete /> </Button>

@@ -27,6 +27,7 @@ defineProps({
   button {
     width: 100%;
     border: none;
+    display: block;
     @include bgColor(primary1,0.4);
     padding: 1rem;
     @include color(primary4);

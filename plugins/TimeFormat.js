@@ -3,11 +3,15 @@ export default defineNuxtPlugin((nuxtApp) => {
   const timeFormat = {
 
     formatTime : (time) => {
-      const [ hours, minutes ] = time.split(':');
-      let result = '';
+      const [ hours, minutes ] = time.split(':')
+      let result = ''
 
-      result += hours + 'h';
-      if (minutes > 0) result += minutes;
+      result += hours + 'h'
+      if (minutes > 0) {
+        result += minutes
+      } else {
+        result+='00'
+      }
 
       return result;
     },
@@ -27,6 +31,14 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
 
       return str
+
+    },
+
+    renderFormatTimeInput: (time) => {
+
+      const [hours, min, sec] = time.split(':')
+
+      return hours+':'+min;
 
     }
 
