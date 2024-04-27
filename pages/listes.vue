@@ -4,6 +4,7 @@ import Folder from "~/components/icones/folder.vue";
 import {useNavBar} from "~/stores/ui/navbar";
 import {useRouting} from "~/stores/routing.js";
 import {useUsers} from "~/stores/entity/users.js";
+import Tooltips from "~/components/tooltips.vue";
 
 const useRoutingStore = useRouting()
 const useNavBarStore = useNavBar()
@@ -44,33 +45,52 @@ useHead(() => ({
       </div>
 
       <nuxt-link :to="useRoutingStore.url.listeSingle('mes-cours')" class="folder">
+        <div class="tooltipsContainer">
+          <tooltips text="Séance d'enseignement, les intervenants peuvent être lié" />
+        </div>
         <folder />
         <h3>Mes cours</h3>
       </nuxt-link>
 
       <nuxt-link :to="useRoutingStore.url.listeSingle('mes-programmes')" class="folder w-75">
+        <div class="tooltipsContainer">
+          <tooltips text="Programme annuel d'enseignement, les cours sont lié" />
+        </div>
         <folder />
         <h3>Mes maquettes pédagogiques</h3>
       </nuxt-link>
 
-      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-classes')" class="folder">
-        <folder />
-        <h3>Mes classes</h3>
-      </nuxt-link>
 
       <nuxt-link :to="useRoutingStore.url.listeSingle('mes-intervenants')" class="folder">
+        <div class="tooltipsContainer">
+          <tooltips text="Professeurs/enseignant, peut être lié à un cours" />
+        </div>
         <folder />
         <h3>Mes intervenants</h3>
       </nuxt-link>
 
-      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-salles')" class="folder">
+      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-classes')" class="folder">
+        <div class="tooltipsContainer">
+          <tooltips text="Groupe d'élèves" />
+        </div>
         <folder />
-        <h3>Mes salles</h3>
+        <h3>Mes classes</h3>
       </nuxt-link>
 
       <nuxt-link :to="useRoutingStore.url.listeSingle('mes-eleves')" class="folder">
+        <div class="tooltipsContainer">
+          <tooltips text="Apprenants inscrits, lié à une classe" />
+        </div>
         <folder />
         <h3>Mes élèves</h3>
+      </nuxt-link>
+
+      <nuxt-link :to="useRoutingStore.url.listeSingle('mes-salles')" class="folder">
+        <div class="tooltipsContainer">
+          <tooltips text="Espace où les élèves suivent les cours" />
+        </div>
+        <folder />
+        <h3>Mes salles</h3>
       </nuxt-link>
 
     </div>
@@ -107,6 +127,8 @@ useHead(() => ({
     text-decoration: none;
     transition: 0.3s ease-in-out background;
     text-align: center;
+    position: relative;
+    z-index: 0;
 
     &.w-75 {
       width: calc(75% - 20px);
@@ -120,10 +142,17 @@ useHead(() => ({
 
     }
 
-
-
     &:hover {
       @include bgColor(light2);
+
+    }
+
+    .tooltipsContainer {
+      z-index: 1;
+      position: absolute;
+      display: inline-block;
+      right: 8px;
+      top: 8px;
 
     }
 
