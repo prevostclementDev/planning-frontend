@@ -3,8 +3,10 @@ import TopModal from "~/components/modal/elements/topModal.vue";
 import ContentModal from "~/components/modal/elements/contentModal.vue";
 import EventsForm from "~/components/events/eventsForm.vue";
 import Tabs from "~/components/form/interaction/Tabs.vue";
+import Repetition from "~/components/events/repetition.vue";
 
 const activeTabs = ref('general')
+const calendarStore = useCalendar()
 
 defineProps({
   event : {
@@ -18,7 +20,10 @@ defineProps({
 
 <template>
   <div class="modal">
-    <top-modal :title="( event?.def?.title ) ? event.def.title : 'Modifier le cours'" />
+    <top-modal
+        :title="( event?._def?.title ) ? event._def.title : 'Modifier le cours'"
+        :color="(event._def.extendedProps.extraParams.color) ? event._def.extendedProps.extraParams.color : null"
+    />
     <content-modal>
 
       <div class="tabs">
@@ -27,6 +32,12 @@ defineProps({
 
       <div class="tabsContainer">
         <events-form v-if="activeTabs === 'general'" :event="event" />
+        <planning-conflicts-lists
+            v-if="activeTabs === 'conflict'"
+            :id-planning="calendarStore.state.calendarId"
+            :id-slots="event._def.extendedProps.extraParams.id_in_db"
+        />
+        <repetition v-if="activeTabs === 'repetition'" />
       </div>
 
     </content-modal>

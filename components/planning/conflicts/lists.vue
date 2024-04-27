@@ -5,19 +5,33 @@ import Error from "~/components/icones/error.vue";
 import Eyes from "~/components/icones/eyes.vue";
 import Button from "~/components/form/interaction/Button.vue";
 import {useCalendar} from "~/stores/calendar.js";
+import {useRouting} from "~/stores/routing.js";
 
 const fetchStore = useFetch()
 const calendarStore = useCalendar();
+const routingStore = useRouting()
 const { $timeFormat } = useNuxtApp()
 
 const props = defineProps({
   idPlanning : {
     type : String,
     required :true
+  },
+  idSlots : {
+    type : String,
+    default : null,
+    required : false
   }
 })
 
-const url = `schoolspaces/plannings/${props.idPlanning}/conflicts`;
+let url = ''
+
+if ( props.idSlots === null ) {
+   url = `schoolspaces/plannings/${props.idPlanning}/conflicts`
+} else {
+   url = `schoolspaces/plannings/${props.idPlanning}/slots/${props.idSlots}/conflicts`
+}
+
 
 onMounted(() => {
   fetchStore.action[fetchStore.actionType.FETCH_DATA](url)
@@ -27,16 +41,9 @@ function renderTimeConflict(start_time,end_time){
   return $timeFormat.formatTime(start_time) + ' - ' +  $timeFormat.formatTime(end_time)
 }
 
-function renderDate(date){
-
-  const toRenderDate = new Date(date)
-
-  return $timeFormat.renderToDigit(toRenderDate.getDate()) + '/' + $timeFormat.renderToDigit(toRenderDate.getMonth()+1) + '/' + toRenderDate.getFullYear()
-}
-
 function openConflict(idPlanning, date, idSlot){
 
-  navigateTo(`/planning/${idPlanning}?conflict=${date}|${idSlot}`, {
+  navigateTo(routingStore.url.planningSingle(idPlanning)+`?conflict=${date}|${idSlot}`, {
     open: {
       target: '_blank',
     }
@@ -46,8 +53,8 @@ function openConflict(idPlanning, date, idSlot){
 </script>
 
 <template>
-  <div class="conflictList">
-    <h3>Erreur(s) & conflit(s)</h3>
+  <div :class="( idSlots !== null ) ? 'conflictList forSlot' : 'conflictList'">
+    <h3 v-if="props.idSlots === null">Erreur(s) & conflit(s)</h3>
 
     <div class="baseContainer">
 
@@ -56,24 +63,27 @@ function openConflict(idPlanning, date, idSlot){
       </div>
       <div class="errors" v-else-if="fetchStore.state.error[url]">
         <error />
-        <span class="textBold">Une erreur est survenue, nous n'arrivons pas à récupérer les erreurs du planning</span>
+        <span class="textBold">
+          Une erreur est survenue, nous n'arrivons pas à récupérer les erreurs du {{ ( props.idSlots === null ) ? 'planning' : 'cours' }}
+        </span>
       </div>
       <div class="containerList" v-else-if="fetchStore.state.data[url] && fetchStore.state.data[url].data.conflicts.length > 0" v-dragscroll.x>
 
         <div class="conflit" v-for="conflit in fetchStore.state.data[url].data.conflicts">
-          <div class="badge">Conflit</div>
+          <div class="badge" v-if="props.idSlots === null">Conflit</div>
           <div class="title h4">
-            {{ ( idPlanning === conflit.IdPlanning ) ? conflit.NameSlot : conflit.NameSlotConflict  }}
+            {{ ( idPlanning === conflit.IdPlanning && idSlots === null ) ? conflit.NameSlot : conflit.NameSlotConflict  }}
           </div>
           <div class="date">
-            <span class="date">{{ ( idPlanning === conflit.IdPlanning ) ? renderDate(conflit.daydateSlot) : renderDate(conflit.daydateSlotConflict) }}</span>
-            <span class="time">{{ ( idPlanning === conflit.IdPlanning ) ? renderTimeConflict(conflit.startHourSlot, conflit.endHourSlot)  : renderTimeConflict(conflit.startHourSlotConflict, conflit.endHourSlotConflict)  }}</span>
+            <span class="date">{{ ( idPlanning === conflit.IdPlanning && idSlots === null ) ? $timeFormat.dateFormat(conflit.daydateSlot) : $timeFormat.dateFormat(conflit.daydateSlotConflict) }}</span>
+            <span class="time">{{ ( idPlanning === conflit.IdPlanning && idSlots === null ) ? renderTimeConflict(conflit.startHourSlot, conflit.endHourSlot)  : renderTimeConflict(conflit.startHourSlotConflict, conflit.endHourSlotConflict)  }}</span>
           </div>
           <div class="content text">
             {{ (conflit.teacherId) ? 'L\'intervenant est indisponible' : 'Salle de classe indisponible' }}
           </div>
           <div class="action end">
             <Button
+                v-if="props.idSlots === null"
                 custom-class="clear"
                 @click="
                 calendarStore.action[calendarStore.actionType.SEE_EVENTS_CONFLICTS](
@@ -97,7 +107,7 @@ function openConflict(idPlanning, date, idSlot){
 
       </div>
       <div v-else-if="fetchStore.state.data[url] && fetchStore.state.data[url].data.conflicts.length === 0" class="noConflict">
-        Aucun conflit sur le planning
+        Aucun conflit sur le {{ ( props.idSlots === null ) ? 'planning' : 'cours' }}
       </div>
 
     </div>
@@ -117,7 +127,8 @@ function openConflict(idPlanning, date, idSlot){
   }
 
   .noConflict {
-    margin: 1rem 0;
+    margin: 2rem 0;
+    @include typographie(textBold);
 
   }
 
@@ -180,6 +191,28 @@ function openConflict(idPlanning, date, idSlot){
     height: 100%;
     padding : 2rem 0;
     @include flex();
+
+  }
+
+  &.forSlot {
+
+    .containerList {
+      flex-direction: column;
+
+      .conflit {
+        background: transparent;
+        width: 100%;
+        border-radius: 0;
+        border-bottom: 1px solid getColor(primary4);
+
+        &:last-child {
+          border-bottom: none;
+
+        }
+
+      }
+
+    }
 
   }
 

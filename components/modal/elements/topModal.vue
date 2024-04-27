@@ -9,12 +9,17 @@ defineProps({
   title : {
     type : String,
     required : true
+  },
+  color : {
+    type : String,
+    default : '',
+    required : false,
   }
 })
 </script>
 
 <template>
-  <div class="title">
+  <div class="title" :style="(color !== null) ? `border-bottom : 10px solid ${color} ;` : ''">
     <h3>{{ title }}</h3>
     <Button custom-class="clear" @click.prevent="useModalStore.action[useModalStore.actionType.CLOSE_MODAL]"> <close /> </Button>
   </div>

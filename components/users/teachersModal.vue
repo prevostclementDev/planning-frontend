@@ -24,7 +24,7 @@ defineProps({
         <tabs :action="{ general : 'Information général', skill : 'Cours associé(s)' }" :default-value="activeTabs" v-model="activeTabs"></tabs>
 
         <div class="tabsContainer">
-          <form-users v-if="activeTabs === 'general'" :users-data="data" onfinish="" />
+          <form-users v-if="activeTabs === 'general'" :users-data="data" :onfinish="() => {}" />
           <skills v-if="activeTabs === 'skill'" :teacher-data="data" />
         </div>
 

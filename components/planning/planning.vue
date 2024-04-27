@@ -35,14 +35,14 @@ const endDateObject = new Date(props.endDate)
 const calendar = ref(null);
 const calendarStore = useCalendar();
 
-calendarStore.mutation[calendarStore.mutationType.SET_CALENDAR_ID](props.planningsId)
 calendarStore.mutation[calendarStore.mutationType.INIT_OPTIONS]({
-  defaultDate : props.startDate,
   validRange: {
-    start: props.startDate,
-    end: props.endDate
+    start: new Date(props.startDate).setDate(new Date(props.startDate).getDate() + 1),
+    end: new Date(props.endDate).setDate(new Date(props.endDate).getDate() + 1)
   },
 })
+
+calendarStore.mutation[calendarStore.mutationType.SET_CALENDAR_ID](props.planningsId)
 
 const nowDate = computed(() => {
   const date = new Date(calendarStore.state.calendarCurrentDate)
@@ -53,12 +53,11 @@ const nowDate = computed(() => {
 onMounted(() => {
 
   calendarStore.mutation[calendarStore.mutationType.SET_CALENDAR]( calendar.value )
+  calendarStore.state.calendar.getApi().gotoDate(props.startDate)
 
   if ( route.query.conflict ) {
-
     const [ date, idSlot ] = route.query.conflict.split('|')
     calendarStore.action[calendarStore.actionType.SEE_EVENTS_CONFLICTS](date, idSlot)
-
   }
 
 })

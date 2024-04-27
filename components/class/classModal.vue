@@ -4,6 +4,7 @@ import ContentModal from "~/components/modal/elements/contentModal.vue";
 import Tabs from "~/components/form/interaction/Tabs.vue";
 import {useModal} from "~/stores/ui/modal.js";
 import FormClass from "~/components/class/formClass.vue";
+import UsersInClass from "~/components/class/users/usersInClass.vue";
 
 const modalStore = useModal()
 const activeTabs = ref('general')
@@ -32,6 +33,7 @@ defineProps({
               :onsuccess="() => modalStore.action[modalStore.actionType.CLOSE_MODAL]()"
               :onfailure="() => modalStore.action[modalStore.actionType.CLOSE_MODAL]()"
           />
+          <users-in-class v-if="activeTabs === 'eleves'" :class-data="data" />
         </div>
       </div>
 

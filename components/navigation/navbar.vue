@@ -8,8 +8,10 @@ import Support from "~/components/icones/support.vue";
 import Arrow from "~/components/icones/arrow.vue";
 import Logo from "~/components/icones/logo.vue";
 import {useNavBar} from "~/stores/ui/navbar";
+import {useRouting} from "~/stores/routing";
 
 const useNavBarStore = useNavBar()
+const routingStore = useRouting()
 
 </script>
 
@@ -22,7 +24,7 @@ const useNavBarStore = useNavBar()
       </li>
 
       <li class="items">
-        <NuxtLink to="/">
+        <NuxtLink :to="routingStore.url.dashboard">
           <div class="main">
             <Home />
             <span>Dashboard</span>
@@ -39,14 +41,14 @@ const useNavBarStore = useNavBar()
       </li>
 
       <li class="items">
-        <NuxtLink to="/plannings">
+        <NuxtLink :to="routingStore.url.planningsList">
           <div class="main">
             <Planning />
-            <span>Planning</span>
+            <span>Plannings</span>
           </div>
 
           <span v-show="!useNavBarStore.isFullNavBar" class="toolsTipsWrap">
-            <span class="toolsTips">Planning</span>
+            <span class="toolsTips">Plannings</span>
           </span>
 
           <div class="svg">
@@ -56,7 +58,7 @@ const useNavBarStore = useNavBar()
       </li>
 
       <li class="items">
-        <NuxtLink to="/listes">
+        <NuxtLink :to="routingStore.url.dataList">
           <div class="main">
             <Listes />
             <span>Listes</span>
@@ -72,7 +74,7 @@ const useNavBarStore = useNavBar()
         </NuxtLink>
       </li>
 
-      <li class="items">
+      <li v-if="true === false" class="items">
         <NuxtLink to="/messagerie">
           <div class="main">
             <Messagerie />
@@ -94,7 +96,7 @@ const useNavBarStore = useNavBar()
       </li>
 
       <li class="items">
-        <NuxtLink to="/documentation">
+        <NuxtLink :to="routingStore.url.documentation">
           <div class="main">
             <Documentation />
             <span>Documentation</span>
@@ -111,7 +113,7 @@ const useNavBarStore = useNavBar()
       </li>
 
       <li class="items">
-        <NuxtLink to="/support">
+        <NuxtLink :to="routingStore.url.support">
           <div class="main">
             <Support />
             <span>Support</span>

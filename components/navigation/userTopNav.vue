@@ -4,9 +4,20 @@ import Parametre from "~/components/icones/parametre.vue";
 import {useAuth} from "~/stores/Auth";
 import Button from "~/components/form/interaction/Button.vue";
 import Loggout from "~/components/icones/loggout.vue";
+import Lists from "~/components/notifications/lists.vue";
+import {useNotification} from "~/stores/entity/notification";
+import {useRouting} from "~/stores/routing";
 
 const profilActionOpen = ref(false);
+const notificationOpen = ref(false);
+
+const routingStore = useRouting()
 const authStore = useAuth();
+const notificationStore = useNotification()
+
+onMounted(() => {
+  notificationStore.action[notificationStore.actionType.GET_LIST]()
+})
 
 </script>
 
@@ -23,11 +34,26 @@ const authStore = useAuth();
 
     <div class="action">
 
-      <NuxtLink to="/"> Aide </NuxtLink>
+<!--      <NuxtLink to="/"> Aide </NuxtLink>-->
 
       <div class="iconeAction">
-        <NuxtLink to="/"><Notification /></NuxtLink>
-        <NuxtLink to="/"><Parametre /></NuxtLink>
+
+        <NuxtLink :to="routingStore.url.params"><Parametre /></NuxtLink>
+
+        <div class="notification-link">
+          <Notification @click.prevent="notificationOpen = !notificationOpen" />
+          <span
+              class="number"
+              v-if="notificationStore.state.list !== null && notificationStore.state.list.data.conflicts.length !== 0"
+              @click.prevent="notificationOpen = !notificationOpen"
+          >
+            {{ notificationStore.state.list.data.conflicts.length }}
+          </span>
+          <div class="notificationListNotice" v-if="notificationOpen">
+            <lists />
+          </div>
+        </div>
+
       </div>
 
       <div class="user-profil" @click="profilActionOpen = !profilActionOpen">
@@ -65,14 +91,61 @@ const authStore = useAuth();
   }
 
   .action {
-    @include flex(flex-end);
+    @include flex(flex-end,center);
 
     .iconeAction {
       margin: 0 1rem;
       @include flex();
 
       a {
-        margin: 0 .75rem;
+        margin: 0 .6rem;
+        display: block;
+        width: fit-content;
+
+        &:first-child {
+          height: 20px;
+
+        }
+
+      }
+
+    }
+
+    .notification-link {
+      @include flex();
+      position: relative;
+      text-decoration: none;
+      margin: 0 .5rem;
+
+      span,svg {
+        cursor: pointer;
+        user-select: none;
+
+      }
+
+      span {
+        margin-left: .3rem;
+        @include bgColor(error0);
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        @include color(light3);
+        @include flex();
+
+      }
+
+      .notificationListNotice {
+        display: inline-block;
+        position: absolute;
+        bottom: -10px;
+        transform: translateY(100%);
+        @include bgColor(light3);
+        @include effect(shadow);
+        border: 1px solid getColor(primary4,.2);
+        padding: 1rem;
+        width: 300px;
+        border-radius: 8px;
+        right: 0;
 
       }
 
@@ -91,7 +164,8 @@ const authStore = useAuth();
         display: inline-block;
         position: absolute;
         right: 0;
-        bottom: -50px;
+        bottom: 0;
+        transform: translateY(100%);
         padding: 8px;
         border-radius: 10px;
         width: 200px;

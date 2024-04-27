@@ -102,6 +102,8 @@ export default {
 
         await fetchStore.action[fetchStore.actionType.FETCH_DATA](url,method,(data) ? data : state.value.formData)
 
+        console.log(fetchStore.state)
+
         if ( ! fetchStore.state.error[url] ) {
 
           onfinish()
@@ -116,8 +118,17 @@ export default {
 
         } else {
 
+          let errorMsg = false
+
+          if ( typeof fetchStore.state.data[url].data !== 'undefined' && fetchStore.state.data[url].data.errors ) {
+            errorMsg = ''
+            Object.keys(fetchStore.state.data[url].data.errors).forEach(key => {
+              errorMsg += fetchStore.state.data[url].data.errors[key] + ' '
+            })
+          }
+
           $toast.update(idToast, {
-            render: ( fetchStore.state.data[url].data.details ) ? fetchStore.state.data[url].data.details : 'Une erreur est survenue',
+            render: ( fetchStore.state.data[url].data.details ) ? fetchStore.state.data[url].data.details : (errorMsg !== false) ? errorMsg : 'Une erreur est survenue',
             autoClose: true,
             type: 'error',
             isLoading: false,

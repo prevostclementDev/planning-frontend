@@ -12,7 +12,7 @@ const props = defineProps({
   onfinish : {
     type : Function,
     required : false,
-    default : () => { console.log('form send with success') }
+    default : (params, status) => { console.log('form send with success') }
   },
   usersData : {
     type : Object,
@@ -63,8 +63,8 @@ async function submit(){
   await v$.value.$validate()
 
   if ( ! v$.value.$error ) {
-    await useUsersStore.action[useUsersStore.actionType.SEND_FORM]()
-    props.onfinish()
+    const state = await useUsersStore.action[useUsersStore.actionType.SEND_FORM]()
+    props.onfinish(useUsersStore.state.formData, state)
   }
 
   isLoading.value = false

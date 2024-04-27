@@ -36,21 +36,29 @@ export const useAuth = defineStore('auth', () => {
     )
 
     if ( ! useFetchStore.state.error[authUrl] ) {
+
       authState.value = {
         'X-CSRF-TOKEN' : useFetchStore.state.data[authUrl].data.csrf,
         'USER' : useFetchStore.state.data[authUrl].data.user,
-        'PERMISSIONS' : useFetchStore.state.data[authUrl].data.permissions
+        'PERMISSIONS' : useFetchStore.state.data[authUrl].data.permissions,
+        'CONFIRM_EMAIL' : useFetchStore.state.data[authUrl].data.userIsConfirm
       }
 
       useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL](authUrl)
 
-      return true
+      if ( ! authState.value['CONFIRM_EMAIL'] ) {
+        useFetchStore.action[useFetchStore.actionType.FETCH_DATA]('send-code-email-check', 'POST')
+        useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL]('send-code-email-check')
+        return [true, 'email-code-verif']
+      }
+
+      return [true,'confirm']
     }
 
     authError.value = ( useFetchStore?.state?.data[authUrl]?.data ) ? useFetchStore.state.data[authUrl].data : 'Une erreur est survenue'
     useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL](authUrl)
 
-    return false
+    return [false]
   }
 
   // logout user

@@ -102,7 +102,7 @@ const refType = ref(props.type);
 
     <span v-if="isError" class="errors">
       <error />
-      <span v-for="error in errors">{{ (error.$message) ? error.$message : error }}</span>
+      <span>{{ (errors[0].$message) ? errors[0].$message : errors[0] }}</span>
     </span>
   </label>
 </template>

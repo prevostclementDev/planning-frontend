@@ -56,11 +56,11 @@
 
   @for $i from 1 through 10 {
 
-    .bg-opacity-#{$i}  {
+    .bg-#{$name}-opacity-#{$i}  {
       background: var(--color-#{$name}-opacity-#{$i});
     }
 
-    .c-opacity-#{$i}  {
+    .c-#{$name}-opacity-#{$i}  {
       background: var(--color-#{$name}-opacity-#{$i});
     }
 

@@ -35,6 +35,11 @@ a {
 
   }
 
+  &:hover {
+    @include color(primary4);
+
+  }
+
 }
 
 

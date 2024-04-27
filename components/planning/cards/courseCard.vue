@@ -1,5 +1,7 @@
 <script setup>
 
+import Error from "~/components/icones/error.vue";
+
 const { $timeFormat } = useNuxtApp()
 
 defineProps({
@@ -54,7 +56,8 @@ defineProps({
     <h4> {{ CourseName }} </h4>
     <div v-if="hoursRequired" class="progressBar">
       <div class="title f-s-400 fs-s">
-        {{ $timeFormat.formatTime(totalTimePlaced) }} sur {{ $timeFormat.formatTime(hoursRequired) }}
+        <span :class="($timeFormat.compareTime(totalTimePlaced,hoursRequired)) ? 'c-error0' : ''" >{{ $timeFormat.formatTime(totalTimePlaced) }} sur {{ $timeFormat.formatTime(hoursRequired) }}</span>
+        <error v-if="$timeFormat.compareTime(totalTimePlaced,hoursRequired)" />
       </div>
       <div class="background">
         <span class="backgroundProgress" :style="{ background : (CourseColor) ? CourseColor : '' }"></span>
@@ -72,6 +75,7 @@ defineProps({
   border-radius: 8px;
   cursor: grab;
   z-index: 1;
+  border: 1px solid getColor(light3,.5);
 
   h4 {
     padding: 1rem;
@@ -85,6 +89,13 @@ defineProps({
     .title {
       position: relative;
       z-index: 2;
+      @include flex(flex-start);
+      margin-bottom: .5rem;
+
+      svg {
+        margin-left: .5rem;
+
+      }
 
     }
 

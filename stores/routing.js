@@ -6,6 +6,7 @@ export const useRouting = defineStore('routing', () => {
     dashboard : '/',
     planningsList : '/plannings',
     connexion : '/se-connecter',
+    codeVerification : '/verification-code',
     support : '/support',
     messagerie : '/messagerie',
     dataList : '/listes',
@@ -13,6 +14,7 @@ export const useRouting = defineStore('routing', () => {
     createData : '/creer-des-donnees',
     planningSingle : (id) => `/planning/${id}`,
     listeSingle : (slug) => `/liste/${slug}`,
+    params : '/parametre',
 
   }
 

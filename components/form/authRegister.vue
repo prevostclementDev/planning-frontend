@@ -5,7 +5,9 @@ import {email, helpers, minLength, required} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
 import {useAuth} from "~/stores/Auth.js";
 import {useFetch} from "~/stores/Fetch.js";
+import {useRouting} from "~/stores/routing.js";
 
+const routingStore = useRouting()
 const useAuthStore = useAuth();
 const useFetchStore = useFetch()
 const { $toast } = useNuxtApp()
@@ -66,7 +68,7 @@ async function submitForm(e){
 
     const authentification = await useAuthStore.auth(formData.value,'schoolspaces')
 
-    if ( authentification ) {
+    if ( authentification[0] && authentification[1] === 'confirm' ) {
 
       $toast.update(idToast, {
         render: 'Inscription réussi, vous allez être redirigé',
@@ -76,7 +78,20 @@ async function submitForm(e){
       });
 
       setTimeout(() => {
-        navigateTo('/')
+        navigateTo(routingStore.url.dashboard)
+      },1000)
+
+    } else if ( authentification[0] && authentification[1] === 'email-code-verif' ) {
+
+      $toast.update(idToast, {
+        render: 'Inscription réussi, veuillez confirmer votre email',
+        autoClose: true,
+        type: 'success',
+        isLoading: false,
+      });
+
+      setTimeout(() => {
+        navigateTo(routingStore.url.codeVerification)
       },1000)
 
     } else {

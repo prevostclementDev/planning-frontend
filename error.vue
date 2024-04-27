@@ -1,12 +1,14 @@
 <script setup>
 import Button from "~/components/form/interaction/Button.vue";
 import Logo from "~/components/icones/logo.vue";
+import {useRouting} from "~/stores/routing.js";
 
+const routingStore = useRouting()
 const error = useError();
 
-const handleError = () => {
+const handleError = (uri) => {
   clearError({
-    redirect: '/',
+    redirect: uri,
   });
 };
 </script>
@@ -16,12 +18,15 @@ const handleError = () => {
 
     <logo />
 
-    <h1 class="c-primary2">Ouups, nous avons rencontré <br> une erreur :(</h1>
+    <h1 class="c-primary2">Ooops, nous avons rencontré <br> une erreur :(</h1>
     <p class="c-error0">
       <strong>{{ error.message }}</strong>
     </p>
 
-    <Button @click.prevent="handleError">Retour sur le dashboard</Button>
+    <Button @click.prevent="handleError(( error.message !== 'Votre email n\'est pas verifié' ) ? routingStore.url.dashboard : routingStore.url.codeVerification )"
+    >
+      {{ ( error.message !== 'Votre email n\'est pas verifié' ) ? 'Retour sur le dashboard' : 'Verifier mon mail' }}
+    </Button>
 
   </div>
 </template>

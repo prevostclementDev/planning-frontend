@@ -38,7 +38,9 @@ async function removeElement(){
 
   if ( useFetchStore.state.error[props.deleteUrl] ) {
     useModalStore.action[useModalStore.actionType.CLOSE_MODAL]()
-    $toast.error('Une erreur est survenue pendant la suppression')
+    $toast.error(
+        (useFetchStore.state.data[props.deleteUrl].data && useFetchStore.state.data[props.deleteUrl].data.details ) ? useFetchStore.state.data[props.deleteUrl].data.details : 'Une erreur est survenue pendant la suppression'
+    )
   } else {
 
     props.ondelete(props.ondeleteparams)

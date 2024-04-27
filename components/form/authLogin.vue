@@ -4,7 +4,9 @@ import Input from "~/components/form/interaction/Input.vue";
 import {useVuelidate} from "@vuelidate/core";
 import {required, email, minLength, helpers} from '@vuelidate/validators'
 import {useFetch} from "~/stores/Fetch.js";
+import {useRouting} from "~/stores/routing.js";
 
+const routingStore = useRouting()
 const useAuthStore = useAuth()
 const { $toast } = useNuxtApp()
 const useFetchStore = useFetch()
@@ -53,7 +55,7 @@ async function submitForm(e){
 
     const authentification = await useAuthStore.auth(formData.value);
 
-    if ( authentification ) {
+    if ( authentification[0] && authentification[1] === 'confirm' ) {
 
       $toast.update(idToast, {
         render: 'Connexion réussi !',
@@ -63,7 +65,20 @@ async function submitForm(e){
       });
 
       setTimeout(() => {
-        navigateTo('/')
+        navigateTo(routingStore.url.dashboard)
+      },1000)
+
+    } else if ( authentification[0] && authentification[1] === 'email-code-verif' ) {
+
+      $toast.update(idToast, {
+        render: 'Connexion réussi, veuillez confirmer votre email',
+        autoClose: true,
+        type: 'success',
+        isLoading: false,
+      });
+
+      setTimeout(() => {
+        navigateTo(routingStore.url.codeVerification)
       },1000)
 
     } else {

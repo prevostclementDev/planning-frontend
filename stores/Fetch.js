@@ -107,7 +107,7 @@ export const useFetch = defineStore('fetch', () => {
       }
 
       if ( _response.status === 304 ) {
-        mutation[mutationType.SET_ERROR](false)
+        mutation[mutationType.SET_ERROR](apiUrl, false)
         mutation[mutationType.SET_DATA](apiUrl, {})
         mutation[mutationType.SET_LOADING](apiUrl, false)
         return;
@@ -128,6 +128,14 @@ export const useFetch = defineStore('fetch', () => {
       mutation[mutationType.SET_ERROR](apiUrl, ! JSONResponse.statusBool)
       mutation[mutationType.SET_LOADING](apiUrl, false)
 
+      // if 403 permissions return not confirm email error type
+      if ( JSONResponse.code === 403 && JSONResponse.data.TypeError && JSONResponse.data.TypeError === 'not_confirm_email' ) {
+        throw createError({
+          statusCode: 403,
+          statusMessage: 'Votre email n\'est pas verifié',
+          fatal : true
+        })
+      }
 
     }
 

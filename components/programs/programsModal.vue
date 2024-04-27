@@ -4,6 +4,7 @@ import ContentModal from "~/components/modal/elements/contentModal.vue";
 import Tabs from "~/components/form/interaction/Tabs.vue";
 import {useModal} from "~/stores/ui/modal.js";
 import FormPrograms from "~/components/programs/formPrograms.vue";
+import CourseInPrograms from "~/components/programs/courses/courseInPrograms.vue";
 
 const modalStore = useModal()
 const activeTabs = ref('general')
@@ -19,7 +20,7 @@ defineProps({
 
 <template>
   <div class="modal">
-    <top-modal title="Programmes" />
+    <top-modal :title="data.name" />
     <content-modal>
       <div class="innerModal">
         <tabs :action="{ general : 'Information général', cours : 'Les cours' }" v-model="activeTabs" :default-value="activeTabs" />
@@ -32,6 +33,7 @@ defineProps({
               :onsuccess="() => modalStore.action[modalStore.actionType.CLOSE_MODAL]()"
               :onfailure="() => modalStore.action[modalStore.actionType.CLOSE_MODAL]()"
           />
+          <course-in-programs v-if="activeTabs === 'cours'" :program="data" />
         </div>
       </div>
 

@@ -4,11 +4,13 @@ import interactionPlugin, {Draggable} from '@fullcalendar/interaction'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import {useFetch} from "~/stores/Fetch.js";
 import { useModal } from "~/stores/ui/modal.js";
+import {useNotification} from "~/stores/entity/notification.js";
 
 export const useCalendar = defineStore('calendar', () => {
 
   const modalStore = useModal()
   const useFetchStore = useFetch()
+  const notificationStore = useNotification()
   const { $toast } = useNuxtApp()
   const { $timeFormat } = useNuxtApp()
 
@@ -40,11 +42,6 @@ export const useCalendar = defineStore('calendar', () => {
     // View
     initialView: 'timeGridWeek',
 
-    validRange: {
-      start: '2024-01-01',
-      end: '2024-12-31'
-    },
-
     // Format
     weekends: false,
     dayHeaderFormat : { weekday: 'short', day: 'numeric', month: 'long' },
@@ -56,7 +53,7 @@ export const useCalendar = defineStore('calendar', () => {
 
     // Event customization
     eventClick : (info) => {
-      modalStore.mutation[modalStore.mutationType.SET_PROPS_MODAL]({ event : { instance : info.event._instance ,def : info.event._def } })
+      modalStore.mutation[modalStore.mutationType.SET_PROPS_MODAL]({ event : info.event })
       modalStore.action[modalStore.actionType.OPEN_MODAL]('events')
     },
     eventContent : (args) => {
@@ -152,7 +149,7 @@ export const useCalendar = defineStore('calendar', () => {
 
         if ( ! useFetchStore.state.error[url] ) {
 
-          $toast.success('Cours enregistré',{ transition: $toast.TRANSITIONS.ZOOM, position: $toast.POSITION.BOTTOM_CENTER, autoClose : 500 });
+          $toast.success('Cours enregistré',{ autoClose : 500 });
           args.event._def.extendedProps.extraParams.id_in_db = useFetchStore.state.data[url].data.id
           action[actionType.SET_PROGRAM_FROM_API](state.value.calendarId)
           useFetchStore.action[useFetchStore.actionType.FETCH_DATA](`schoolspaces/plannings/${state.value.calendarId}/conflicts`)
@@ -165,6 +162,7 @@ export const useCalendar = defineStore('calendar', () => {
 
         }
 
+        notificationStore.action[notificationStore.actionType.GET_LIST](true)
         useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL](url)
 
       }
@@ -198,7 +196,7 @@ export const useCalendar = defineStore('calendar', () => {
 
         if ( ! useFetchStore.state.error[url] ) {
 
-          $toast.success('Cours sauvegardé',{ transition: $toast.TRANSITIONS.ZOOM, position: $toast.POSITION.BOTTOM_CENTER, autoClose : 500 });
+          $toast.success('Cours sauvegardé',{ autoClose : 500 });
           useFetchStore.action[useFetchStore.actionType.FETCH_DATA](`schoolspaces/plannings/${state.value.calendarId}/conflicts`)
           action[actionType.SET_PROGRAM_FROM_API](state.value.calendarId)
 
@@ -209,6 +207,7 @@ export const useCalendar = defineStore('calendar', () => {
 
         }
 
+        notificationStore.action[notificationStore.actionType.GET_LIST](true)
         useFetchStore.mutation[useFetchStore.mutationType.RESET_API_URL](url)
 
       }
@@ -278,15 +277,11 @@ export const useCalendar = defineStore('calendar', () => {
       }
     },
 
-    [mutationType.SET_CALENDAR](calendar,customOption = {}) {
+    [mutationType.SET_CALENDAR](calendar) {
       state.value = {
         ...state.value,
         calendar : calendar,
         calendarCurrentDate: calendar.getApi().currentData.currentDate,
-        calendarOptions : {
-          ...initialOptions,
-          ...customOption
-        }
       }
     },
 

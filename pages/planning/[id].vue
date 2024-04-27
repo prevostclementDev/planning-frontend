@@ -26,8 +26,6 @@ const urlApi = `${planningStore.baseUrl}/${route.params.id}`
 
 const useFetchStore = useFetch()
 
-const { state } = storeToRefs(useFetchStore)
-
 onMounted(async () => {
 
   await useFetchStore.action[useFetchStore.actionType.FETCH_DATA](urlApi)
@@ -69,11 +67,11 @@ onUnmounted(() => {
 
     <div class="contentPlanning">
 
-      <div v-if="state.loading[urlApi]" class="loading">
+      <div v-if="useFetchStore.state.loading[urlApi]" class="loading">
         <loader-small-loader custom-class="blue"/>
       </div>
-      <div v-else-if="state?.data[urlApi]?.data?.planning?.name" class="planningPage">
-        <planning :plannings-id="route.params.id" :start-date="state?.data[urlApi]?.data?.planning.start_date" :end-date="state?.data[urlApi]?.data?.planning.end_date" />
+      <div v-else-if="useFetchStore.state?.data[urlApi]?.data?.planning?.name" class="planningPage">
+        <planning :plannings-id="route.params.id" :start-date="useFetchStore.state?.data[urlApi]?.data?.planning.start_date" :end-date="useFetchStore.state?.data[urlApi]?.data?.planning.end_date" />
       </div>
       <div v-else-if="useFetchStore.state.error[urlApi]">
         Une erreur est survenue

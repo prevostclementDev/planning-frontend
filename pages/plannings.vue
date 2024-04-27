@@ -65,7 +65,7 @@ function openPlanningModal(){
       </Button>
     </div>
 
-    <div v-if="state.error[planningStore.baseUrl]">
+    <div v-if="state.error[planningStore.baseUrl]" class="errors">
       Oups... Une erreur est survenue...
     </div>
 
