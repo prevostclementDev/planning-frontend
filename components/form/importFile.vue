@@ -4,6 +4,7 @@ import DropFile from '~/components/form/interaction/DropFile.vue'
 import { helpers, required } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 import {useFetch} from "~/stores/Fetch.js";
+import TextBox from "~/components/documentation/textBox.vue";
 
 const { $toast } = useNuxtApp()
 const useFetchStore = useFetch()
@@ -23,6 +24,10 @@ const props = defineProps({
     type : String,
     default : '',
     required: true,
+  },
+  linkDefaultFile : {
+    type : String,
+    default : ''
   }
 })
 
@@ -91,6 +96,10 @@ onUnmounted(() => {
 <template>
   <div class="step">
 
+    <div class="formatCsv action" v-if="linkDefaultFile" >
+      <nuxt-link target="_blank" :to="linkDefaultFile" class="textBold">Vous pouvez télécharger le format du fichier ici</nuxt-link>
+    </div>
+
     <DropFile
         custom-id="importation_listes"
         v-model="formData.file"
@@ -104,3 +113,21 @@ onUnmounted(() => {
 
   </div>
 </template>
+
+<style lang="scss" scoped>
+.formatCsv {
+  max-width: 500px;
+  margin: 0 auto 1.5rem;
+  padding: 1rem;
+  border: 1px solid getColor(warning0);
+  border-radius: 10px;
+  @include bgColor(warning0,.1);
+
+  a {
+    text-decoration: underline;
+    cursor: pointer;
+
+  }
+
+}
+</style>

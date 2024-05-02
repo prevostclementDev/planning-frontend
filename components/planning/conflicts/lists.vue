@@ -82,26 +82,30 @@ function openConflict(idPlanning, date, idSlot){
             {{ (conflit.teacherId) ? 'L\'intervenant est indisponible' : 'Salle de classe indisponible' }}
           </div>
           <div class="action end">
-            <Button
-                v-if="props.idSlots === null"
-                custom-class="clear"
-                @click="
+            <tooltips text="Voir le cours en conflit sur ce planning">
+              <Button
+                  v-if="props.idSlots === null"
+                  custom-class="clear"
+                  @click="
                 calendarStore.action[calendarStore.actionType.SEE_EVENTS_CONFLICTS](
                     ( idPlanning === conflit.IdPlanning ) ? conflit.daydateSlot : conflit.daydateSlotConflict,
                     ( idPlanning === conflit.IdPlanning ) ? conflit.IdSlot : conflit.IdSlotConflict,
                 )"
-            >
-              <eyes />
-            </Button>
-            <Button
-                @click.prevent="openConflict(
+              >
+                <eyes />
+              </Button>
+            </tooltips>
+            <tooltips text="Voir le cours en conflit sur l'autre planning">
+              <Button
+                  @click.prevent="openConflict(
                      ( idPlanning === conflit.IdPlanning ) ?  conflit.IdConflictPlanning : conflit.IdPlanning,
                      ( idPlanning === conflit.IdPlanning ) ? conflit.daydateSlotConflict : conflit.daydateSlot ,
                      ( idPlanning === conflit.IdPlanning ) ? conflit.IdSlotConflict : conflit.IdSlot
                 )"
-                custom-class="clear" >
-              <icones-link />
-            </Button>
+                  custom-class="clear" >
+                <icones-link />
+              </Button>
+            </tooltips>
           </div>
         </div>
 

@@ -10,6 +10,7 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
 
   // const
   const listesTypeOptions = {
+
     'classes': {
       title : 'Une classe',
       stepNumber : 4,
@@ -38,7 +39,8 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
               listesTypeOptions.classes.step[3].title = 'Verifier les champs après importation'
               updateStep()
             },
-            importUrl : 'schoolspaces/users/import?readOnly=true'
+            importUrl : 'schoolspaces/users/import?readOnly=true',
+            linkDefaultFile: 'default-imports/exemple-users.csv'
           },
           components : chooseImportOrNot
         },
@@ -54,7 +56,7 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
           components : formListInsert
         },
         4 : {
-          title : 'Et voila ! Toutes les données sont créent',
+          title : 'Et voila ! Toutes les données sont enregistrées',
           components : end
         }
       }
@@ -88,7 +90,8 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
               listesTypeOptions.formation.step[3].title = 'Verifier les champs après importation'
               updateStep()
             },
-            importUrl : 'schoolspaces/courses/import'
+            importUrl : 'schoolspaces/courses/import',
+            linkDefaultFile: 'default-imports/exemple-cours.csv'
           },
           components : chooseImportOrNot
         },
@@ -104,7 +107,7 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
           components : formListInsert
         },
         4 : {
-          title : 'Et voila ! Toutes les données sont créent',
+          title : 'Et voila ! Toutes les données sont enregistrées',
           components : end
         }
       }
@@ -128,7 +131,8 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
               listesTypeOptions.intervenant.step[2].title = 'Verifier les champs après importation'
               updateStep()
             },
-            importUrl : 'schoolspaces/users/import?readOnly=true'
+            importUrl : 'schoolspaces/users/import?readOnly=true',
+            linkDefaultFile: 'default-imports/exemple-users.csv'
           },
           components : chooseImportOrNot
         },
@@ -144,7 +148,7 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
           components : formListInsert
         },
         3: {
-          title : 'Et voila ! Toutes les données sont créent',
+          title : 'Et voila ! Toutes les données sont enregistrées',
           components : end
         }
       }
@@ -164,11 +168,17 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
               }
             },
             onImportSuccess : (data) => {
+
+              data.data.insert.forEach((el, index) => {
+                if ( el.color === null ) data.data.insert[index] = { ...el, color : "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0") }
+              })
+
               listesTypeOptions.cours.step[2].props.dataset = data.data.insert
               listesTypeOptions.cours.step[2].title = 'Verifier les champs après importation'
               updateStep()
             },
-            importUrl : 'schoolspaces/courses/import'
+            importUrl : 'schoolspaces/courses/import',
+            linkDefaultFile: 'default-imports/exemple-cours.csv'
           },
           components : chooseImportOrNot
         },
@@ -184,7 +194,7 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
           components : formListInsert
         },
         3: {
-          title : 'Et voila ! Toutes les données sont créent',
+          title : 'Et voila ! Toutes les données sont enregistrées',
           components : end
         }
       }
@@ -223,7 +233,7 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
           components : formListInsert
         },
         3: {
-          title : 'Et voila ! Toutes les données sont créent',
+          title : 'Et voila ! Toutes les données sont enregistrées',
           components : end
         }
       }

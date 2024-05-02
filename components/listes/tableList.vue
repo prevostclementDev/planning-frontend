@@ -193,6 +193,7 @@ function autcompletedCustomField(){
 // After delete line
 async function afterDelete(params) {
 
+  modal.action[modal.actionType.CLOSE_MODAL]()
   await props.store.action[props.store.actionType.GET_LIST](true)
 
   if ( currentUriPage.value.includes('page') ) {

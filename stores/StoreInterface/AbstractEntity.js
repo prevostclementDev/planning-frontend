@@ -102,8 +102,6 @@ export default {
 
         await fetchStore.action[fetchStore.actionType.FETCH_DATA](url,method,(data) ? data : state.value.formData)
 
-        console.log(fetchStore.state)
-
         if ( ! fetchStore.state.error[url] ) {
 
           onfinish()

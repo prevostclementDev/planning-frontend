@@ -29,6 +29,11 @@ const props = defineProps({
     type : Function,
     required : false,
     default : (key) => { console.log('remove :' + key) }
+  },
+  onAddRow : {
+    type : Function,
+    required : false,
+    default : (model,inputModel) => model.push({...inputModel})
   }
 })
 
@@ -78,7 +83,7 @@ const arrayName = Object.keys(props.inputModel);
           <Input
               v-else
               :type="( specificField[id] && specificField[id].type ) ? specificField[id].type : 'text' "
-              placeholder="Saisir le texte"
+              placeholder="Saisir une valeur"
               v-model="data[id]"
               custom-class="tableView"
               :is-error="(data.errors !== null && data.errors[id])"
@@ -92,7 +97,7 @@ const arrayName = Object.keys(props.inputModel);
     </tbody>
   </table>
   <div class="action">
-    <Button custom-class="clear" @click.prevent="modelOn.push({...props.inputModel})"> <Add type="rounded" /> </Button>
+    <Button custom-class="clear" @click.prevent="onAddRow(modelOn,inputModel)"> <Add type="rounded" /> </Button>
   </div>
 </div>
 </template>

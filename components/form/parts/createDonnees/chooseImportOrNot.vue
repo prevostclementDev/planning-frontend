@@ -18,6 +18,10 @@ const props = defineProps({
   importUrl : {
     type : String,
     required : true
+  },
+  linkDefaultFile : {
+    type : String,
+    default : ''
   }
 })
 </script>
@@ -34,7 +38,7 @@ const props = defineProps({
 
   </div>
   <div v-else>
-    <import-file :onsuccess="(data) => onImportSuccess(data)"  :url="importUrl"/>
+    <import-file :onsuccess="(data) => onImportSuccess(data)"  :url="importUrl" :link-default-file="linkDefaultFile"/>
 
     <div class="action">
       <nuxt-link @click.prevent="onChoose('table')">Ne pas importer de fichier</nuxt-link>

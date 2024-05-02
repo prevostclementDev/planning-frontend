@@ -12,6 +12,8 @@ import EventsModal from "~/components/events/eventsModal.vue";
 import AddSkillsModal from "~/components/users/teachers/addSkillsModal.vue";
 import AddTeacherModal from "~/components/courses/teachers/addTeacherModal.vue";
 import AddCourseModal from "~/components/programs/courses/addCourseModal.vue";
+import AddCourseProgramModal from "~/components/courses/createCourseProgramModal.vue";
+import CreateCourseProgramModal from "~/components/courses/createCourseProgramModal.vue";
 const modalStore = useModal();
 
 function closeModalOnClickParent(e) {
@@ -42,6 +44,7 @@ function closeModalOnClickParent(e) {
       <add-teacher-modal v-else-if="modalStore.state.openModal === 'addTeacherCourse' " v-bind="modalStore.state.propsModal" />
       <add-course-modal v-else-if="modalStore.state.openModal === 'addCourseProgram'"  v-bind="modalStore.state.propsModal"/>
       <class-users-add-users-modal v-else-if="modalStore.state.openModal === 'addUserClass'" v-bind="modalStore.state.propsModal" />
+      <create-course-program-modal v-else-if="modalStore.state.openModal === 'createCourseInProgram'" v-bind="modalStore.state.propsModal" />
 
     </div>
   </transition>

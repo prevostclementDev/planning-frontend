@@ -71,7 +71,13 @@ const monthToDisplay = computed(() => {
   <div class="selectorMonthCalendar" v-dragscroll.x>
     <div class="month" v-for="(month,key) in monthToDisplay">
       <div class="weekSelector">
-        <button @click.prevent="clickUpdateCalendarWeek" v-for="weekData in month" :data-date-to-go="weekData.date" >{{ weekData.number }}</button>
+        <button
+            @click.prevent="clickUpdateCalendarWeek"
+            v-for="weekData in month" :data-date-to-go="weekData.date"
+            :class="(new Date(calendarStore.state.calendarCurrentDate).toLocaleString() === new Date(weekData.date).toLocaleString() ) ? 'active' : ''"
+        >
+          {{ weekData.number }}
+        </button>
       </div>
       <div class="monthText">{{ key }}</div>
     </div>
@@ -98,10 +104,17 @@ const monthToDisplay = computed(() => {
         @include flex();
         @include typographie(text);
         @include color(light3);
-        border-left: 1px solid getColor(light3);
-        border-right: 1px solid getColor(light3);
+        //border-left: 1px solid getColor(light3);
+        //border-right: 1px solid getColor(light3);
         padding: 8px;
         cursor: pointer;
+        border-radius: 4px;
+        margin: .1rem;
+
+        &.active {
+          @include bgColor(primary4)
+
+        }
 
       }
 

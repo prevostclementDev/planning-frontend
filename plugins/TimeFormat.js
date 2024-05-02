@@ -66,7 +66,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       const [ h1, m1 ] = toCompare.split(':')
       const [ h2, m2 ] = comparator.split(':')
 
-      if ( h1 > h2 ) return true
+      if ( parseInt(h1 * 60 + m1) > parseInt(h2 * 60 + m2) ) return true
 
       return false
 

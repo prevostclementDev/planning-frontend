@@ -101,9 +101,9 @@ const openPlanningModal = () => {
 
       </div>
 
-      <div class="card">
-        <h2>Memo</h2>
-      </div>
+<!--      <div class="card">-->
+<!--        <h2>Memo</h2>-->
+<!--      </div>-->
 
     </div>
 

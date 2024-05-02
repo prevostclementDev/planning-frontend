@@ -46,6 +46,7 @@ function openDeleteModal(){
   useModalStore.action[useModalStore.actionType.OPEN_CONFIRM_DELETE](
       usePlanningStore.baseUrl+'/'+props.planning.id,
       (params) => {
+        useModalStore.action[useModalStore.actionType.CLOSE_MODAL]()
         usePlanningStore.action[usePlanningStore.actionType.GET_LIST](true)
       },
   )

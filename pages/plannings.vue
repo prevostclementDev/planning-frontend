@@ -82,8 +82,8 @@ function openPlanningModal(){
 
       <planning-card  v-for="planning in planningStore.state.list?.data.plannings" :planning="planning" />
     </div>
-    <div v-else-if="planningStore.state.list?.data.plannings && planningStore.state.list?.data.plannings.length === 0">
-      Vous n'avez aucun planning
+    <div v-else-if="planningStore.state.list?.data.plannings && planningStore.state.list?.data.plannings.length === 0" class="notData">
+      <p class="textBold">Vous n'avez aucun planning</p>
     </div>
 
   </div>
@@ -123,6 +123,11 @@ function openPlanningModal(){
   margin: 1.4rem 0;
   @include flex(flex-start,flex-start,row,wrap,20px,20px);
   max-width: 75%;
+
+}
+
+.notData {
+  margin: 1.4rem 0;
 
 }
 </style>

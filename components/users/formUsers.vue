@@ -18,6 +18,11 @@ const props = defineProps({
     type : Object,
     required : false,
     default : null
+  },
+  withoutEmail : {
+    type : Boolean,
+    default : false,
+    required : false,
   }
 })
 
@@ -36,6 +41,18 @@ if ( props.usersData && props.usersData.id ) {
 // Validation rules
 // *****************
 const rules = computed(() => {
+
+  if ( props.withoutEmail ) {
+    return {
+      last_name : {
+        required : helpers.withMessage('Le nom est obligatoire', required),
+      },
+      first_name : {
+        required : helpers.withMessage('Le prénom est obligatoire', required),
+      },
+    }
+  }
+
   return {
     mail : {
       required : helpers.withMessage('L\'email est obligatoire', required),
@@ -104,6 +121,7 @@ async function submit(){
       </div>
 
       <Input
+          v-if="! withoutEmail"
           placeholder="email@domaine.com"
           type="email"
           title="Email"

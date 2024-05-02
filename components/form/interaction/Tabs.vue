@@ -22,7 +22,7 @@ defineProps({
 .Tabs {
   position: relative;
   width: 100%;
-  @include flex();
+  @include flex(center,stretch);
 
   button {
     width: 100%;

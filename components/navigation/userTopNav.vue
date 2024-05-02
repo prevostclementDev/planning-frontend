@@ -7,10 +7,9 @@ import Loggout from "~/components/icones/loggout.vue";
 import Lists from "~/components/notifications/lists.vue";
 import {useNotification} from "~/stores/entity/notification";
 import {useRouting} from "~/stores/routing";
+import {useNotice} from "~/stores/ui/notice";
 
-const profilActionOpen = ref(false);
-const notificationOpen = ref(false);
-
+const noticeStore = useNotice()
 const routingStore = useRouting()
 const authStore = useAuth();
 const notificationStore = useNotification()
@@ -19,14 +18,21 @@ onMounted(() => {
   notificationStore.action[notificationStore.actionType.GET_LIST]()
 })
 
+const toggleNotice = (noticeName) => {
+
+  if ( ! noticeStore.notice[noticeName] ) {
+    noticeStore.action[noticeStore.actionType.CLOSE_ALL_NOTICE]()
+    noticeStore.action[noticeStore.actionType.OPEN_NOTICE](noticeName)
+  } else {
+    noticeStore.action[noticeStore.actionType.CLOSE_ALL_NOTICE]()
+  }
+
+}
+
 </script>
 
 <template>
   <div id="userTopNav">
-
-<!--    <div class="logo">-->
-<!--      <img src="" alt="">-->
-<!--    </div>-->
 
     <div class="title">
       <p class="fw-700 h4">({{ authStore?.authState?.USER?.schoolspaces_name }}) Espace {{ authStore?.authState?.USER?.roles?.display_name }} - {{ authStore?.authState?.USER?.first_name }} {{ authStore.authState?.USER?.last_name }}</p>
@@ -34,31 +40,29 @@ onMounted(() => {
 
     <div class="action">
 
-<!--      <NuxtLink to="/"> Aide </NuxtLink>-->
-
       <div class="iconeAction">
 
         <NuxtLink :to="routingStore.url.params"><Parametre /></NuxtLink>
 
         <div class="notification-link">
-          <Notification @click.prevent="notificationOpen = !notificationOpen" />
+          <Notification @click.prevent="toggleNotice('notification')" />
           <span
               class="number"
               v-if="notificationStore.state.list !== null && notificationStore.state.list.data.conflicts.length !== 0"
-              @click.prevent="notificationOpen = !notificationOpen"
+              @click.prevent="toggleNotice('notification')"
           >
             {{ notificationStore.state.list.data.conflicts.length }}
           </span>
-          <div class="notificationListNotice" v-if="notificationOpen">
+          <div class="notificationListNotice" v-if="noticeStore.notice.notification">
             <lists />
           </div>
         </div>
 
       </div>
 
-      <div class="user-profil" @click="profilActionOpen = !profilActionOpen">
+      <div class="user-profil" @click="toggleNotice('user')">
         <button><img src="" alt=""></button>
-        <div v-if="profilActionOpen" class="profil-action">
+        <div v-if="noticeStore.notice.user" class="profil-action">
           <a href="/" @click.prevent="authStore.logout()">
             <span>Se déconnecter</span>
             <loggout />

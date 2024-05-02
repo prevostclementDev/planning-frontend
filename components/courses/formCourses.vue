@@ -2,11 +2,10 @@
 import Input from "~/components/form/interaction/Input.vue";
 import Button from "~/components/form/interaction/Button.vue";
 import {useFetch} from "~/stores/Fetch.js";
-import {helpers, maxLength, required} from "@vuelidate/validators";
+import {helpers, maxLength, numeric, required} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
 import {useCourse} from "~/stores/entity/cours.js";
 import {ColorPicker} from "vue3-colorpicker";
-import DatePicker from "~/components/form/interaction/DatePicker.vue";
 
 const { $toast, $timeFormat } = useNuxtApp()
 const useFetchStore = useFetch()
@@ -41,7 +40,7 @@ if ( props.data.id ) {
   courseStore.mutation[courseStore.mutationType.SET_UPDATE](props.data.id)
   courseStore.mutation[courseStore.mutationType.SET_FORM_DATA]({
     name: props.data.name,
-    hours_required: (props.data.hours_required) ? props.data.hours_required : null,
+    hours_required: (props.data.hours_required) ? props.data.hours_required.split(':')[0] : null,
     color: props.data.color,
   })
 
@@ -51,7 +50,7 @@ if ( props.data.id ) {
   courseStore.mutation[courseStore.mutationType.SET_FORM_DATA]({
     name: '',
     hours_required: '',
-    color: '',
+    color:  "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0"),
   })
 
 }
@@ -65,6 +64,9 @@ const rules = computed(() => {
       required : helpers.withMessage('Le nom est obligatoire', required),
       lenght : helpers.withMessage('Le nom est trop long', maxLength(255)),
     },
+    hours_required : {
+      number : helpers.withMessage('Doit être un nombre', numeric)
+    }
   }
 })
 
@@ -111,12 +113,12 @@ async function submit(){
           :is-error="v$.name.$error"
       />
 
-      <date-picker
-          type="time"
-          title="Le nombres d'heures requises"
-          v-model="courseStore.state.formData.hours_required"
-          model-type="HH:mm:ss"
-          :default-value="courseStore.state.formData.hours_required"
+      <Input
+        type="number"
+        title="Le nombres d'heures requises"
+        v-model="courseStore.state.formData.hours_required"
+        :errors="v$.hours_required.$errors"
+        :is-error="v$.hours_required.$error"
       />
 
       <div class="input-container">

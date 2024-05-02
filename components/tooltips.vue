@@ -6,14 +6,14 @@ defineProps({
     type : String,
     default : '',
     required : false,
-  }
+  },
 })
 
 </script>
 
 <template>
   <div class="tooltips">
-    <info />
+    <slot />
     <div class="text">
       {{ text }}
     </div>
@@ -23,6 +23,7 @@ defineProps({
 <style scoped lang="scss">
 .tooltips {
   position: relative;
+  z-index: 9;
 
   .text {
     position: absolute;
@@ -32,9 +33,11 @@ defineProps({
     transform: translate(-50%,calc( -100% - 3px ));
     @include bgColor(primary3);
     @include color(light3);
+    @include effect(shadow);
     padding: .5rem;
     border-radius: 10px;
-    min-width: 100px;
+    min-width: 200px;
+    text-align: center;
 
   }
 

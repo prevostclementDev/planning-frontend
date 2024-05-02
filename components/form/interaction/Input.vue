@@ -116,6 +116,8 @@ label {
 
   .title {
     margin-bottom: 0.5rem;
+    width: fit-content;
+    white-space: nowrap;
 
   }
 

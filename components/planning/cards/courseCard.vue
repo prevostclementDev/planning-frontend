@@ -56,8 +56,8 @@ defineProps({
     <h4> {{ CourseName }} </h4>
     <div v-if="hoursRequired" class="progressBar">
       <div class="title f-s-400 fs-s">
-        <span :class="($timeFormat.compareTime(totalTimePlaced,hoursRequired)) ? 'c-error0' : ''" >{{ $timeFormat.formatTime(totalTimePlaced) }} sur {{ $timeFormat.formatTime(hoursRequired) }}</span>
-        <error v-if="$timeFormat.compareTime(totalTimePlaced,hoursRequired)" />
+        <span :class="($timeFormat.compareTime(totalTimePlaced,hoursRequired+':00:00')) ? 'c-error0' : ''" >{{ $timeFormat.formatTime(totalTimePlaced) }} sur {{ $timeFormat.formatTime(hoursRequired) }}</span>
+        <error v-if="$timeFormat.compareTime(totalTimePlaced,hoursRequired+':00:00')" />
       </div>
       <div class="background">
         <span class="backgroundProgress" :style="{ background : (CourseColor) ? CourseColor : '' }"></span>

@@ -135,6 +135,13 @@ switch (props.insertType) {
       tempModelOn = [];
       props.dataset.forEach(el => {
 
+        if ( el.color === null ) {
+          el = {
+            ...el,
+            color : "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0")
+          }
+        }
+
         tempModelOn.push({
           ...el,
           errors : null
@@ -142,17 +149,26 @@ switch (props.insertType) {
 
       })
     } else {
-      tempModelOn = Array.from({ length : 1}, () => ({...model}))
+      tempModelOn = Array.from({ length : 1}, () => ({...model, color : "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0") }))
     }
 
     formData.value = {
       ...formData.value,
+      onAddRow : () => {
+        formData.value = {
+          ...formData.value,
+          modelOn : [
+            ...formData.value.modelOn,
+            {...formData.value.inputModel, color : "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0") }
+          ]
+        }
+      },
       inputTitle : ['Nom du cours','Nombre d\'heure requis','Couleur sur le planning'],
       inputModel : model,
       modelOn : tempModelOn,
       specificField : {
         'color' : { type : 'color' },
-        'hours_required' : { type : 'hours' }
+        'hours_required' : { type : 'number' }
       }
     }
 
@@ -254,6 +270,8 @@ onUnmounted(() => {
         :input-title="formData.inputTitle"
         :model-on="formData.modelOn"
         :specific-field="formData.specificField"
+        :on-add-row="( formData.onAddRow ) ? () => formData.onAddRow(formData.modelOn,formData.inputModel) : () => formData.modelOn.push({...formData.inputModel})
+"
     />
 
     <div class="action end">

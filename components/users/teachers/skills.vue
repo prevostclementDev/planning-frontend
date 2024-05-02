@@ -24,7 +24,6 @@ function openDelete(skillId){
       `schoolspaces/users/${props.teacherData.id}/skills/${skillId}`,
       (params) => {
         modal.action[modal.actionType.OPEN_MODAL]('teachers', { data : params })
-        console.log(modal.state)
       },
       props.teacherData
   )

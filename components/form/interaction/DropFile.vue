@@ -56,6 +56,7 @@ const onDropFile = (e) => {
       @dragleave.prevent="isDragOver = false"
       @dragover.prevent=""
       @drop.prevent="onDropFile" >
+
     <label :for="customId">
       <folder type="full" />
       <span class="text"> {{ (modelValue) ? modelValue[0].name : 'Faites glisser votre fichier ici' }} </span>

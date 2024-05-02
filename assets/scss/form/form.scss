@@ -4,15 +4,21 @@
 
 // global container for input
 .input-container {
-  @include flex(flex-start,flex-start,column,wrap,1rem,1rem);
+  @include flex(flex-start,stretch,column,wrap,1rem,1rem);
   width: 100%;
+
+}
+
+.containerToolsTips {
+  @include flex(center,flex-end);
+  padding-bottom: .8rem;
 
 }
 
 // Group of input on same line
 .group {
   width: 100%;
-  @include flex(space-between, center,row,nowrap,10px,10px);
+  @include flex(space-between, stretch,row,nowrap,10px,10px);
 
   label, input {
     width: 100%;

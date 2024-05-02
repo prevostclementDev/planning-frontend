@@ -1,15 +1,14 @@
 <script setup>
-import Select from "~/components/form/interaction/Select.vue";
 import Input from "~/components/form/interaction/Input.vue";
 import Button from "~/components/form/interaction/Button.vue";
 import {usePlanning} from "~/stores/entity/planning.js";
 import {useFetch} from "~/stores/Fetch.js";
-import {helpers, maxLength, not, required, sameAs} from "@vuelidate/validators";
+import {helpers, maxLength, required} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
-import {useClass} from "~/stores/entity/class.js";
-import {usePrograms} from "~/stores/entity/programs.js";
 import SearchSelect from "~/components/form/interaction/searchSelect.vue";
 import DatePicker from "~/components/form/interaction/DatePicker.vue";
+import {useModal} from "~/stores/ui/modal.js";
+import Info from "~/components/icones/info.vue";
 
 const planningStore = usePlanning()
 const useFetchStore = useFetch()
@@ -26,16 +25,11 @@ const props = defineProps({
 // Validation rules
 // *****************
 const rules = computed(() => {
+
   return {
     title : {
       required : helpers.withMessage('Le titre est obligatoire', required),
       email : helpers.withMessage('Le nom est trop long', maxLength(255)),
-    },
-    class : {
-      required : helpers.withMessage('Choisissez un valeur', required),
-    },
-    program : {
-      required : helpers.withMessage('Choisissez un valeur', required),
     },
     startDate : {
       required : helpers.withMessage('Champ requis', required),
@@ -44,6 +38,7 @@ const rules = computed(() => {
       required : helpers.withMessage('Champ requis', required),
     },
   }
+
 })
 
 const v$ = useVuelidate(
@@ -53,7 +48,7 @@ const v$ = useVuelidate(
 
 // If class is already set get name
 const className = ref('')
-if ( planningStore.state.formData.class ) {
+if ( planningStore.state.formData.class && planningStore.state.formData.class !== "0" ) {
 
   const urlGetClass = 'schoolspaces/class/'+planningStore.state.formData.class;
 
@@ -79,7 +74,9 @@ async function submit(e){
     const status = await planningStore.action[planningStore.actionType.SEND_FORM]()
 
     if ( status ) {
+
       props.onsubmitvalide()
+
     }
 
   }
@@ -102,26 +99,31 @@ async function submit(e){
 
       <div class="group">
 
+        <div class="containerToolsTips">
+          <tooltips text="Valeur non obligatoire, peut être attribuée plus tard"><info /></tooltips>
+        </div>
+
         <search-select
             title="Choisissez une classe ?"
             url="schoolspaces/class"
             :display-array="[ 'name' ]"
             v-model="planningStore.state.formData.class"
-            :is-error="v$.class.$error"
-            :errors="v$.class.$errors"
             :default-value="className"
         />
 
+      </div>
+
+      <div class="group" v-if="! planningStore.state.isUpdate">
+        <div class="containerToolsTips">
+          <tooltips :text="'Si vous n\'ajoutez pas de maquette pédagogique, une maquette vide serra créée avec le nom suivant : ' + planningStore.state.formData.title + '_maquette_peda'  "><info /></tooltips>
+        </div>
+
         <search-select
-            title="Choisissez un programme ?"
+            title="Choisissez une maquette pédagogique ?"
             url="schoolspaces/programs"
             :display-array="[ 'name' ]"
             v-model="planningStore.state.formData.program"
-            v-if="! planningStore.state.isUpdate"
-            :is-error="v$.program.$error"
-            :errors="v$.program.$errors"
         />
-
       </div>
 
       <div class="group">

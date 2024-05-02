@@ -1,6 +1,8 @@
 <script setup>
 import Tabs from "~/components/form/interaction/Tabs.vue";
 import FormUsers from "~/components/users/formUsers.vue";
+import Ariane from "~/components/navigation/ariane.vue";
+import {useRouting} from "~/stores/routing.js";
 
 useHead(() => ({
   title : 'Paramètre'
@@ -8,14 +10,19 @@ useHead(() => ({
 
 const activeTabs = ref('general')
 const authStore = useAuth()
-
-
+const rootingStore = useRouting()
 
 </script>
 
 <template>
   <div>
-    <tabs :action="{ general : 'Mon profil utilisateur', school : 'Mon espace scolaire', other : 'Divers' }" :default-value="activeTabs" v-model="activeTabs" />
+
+    <div class="title">
+      <ariane :links="[ { text : 'Dashboard', url : rootingStore.url.dashboard }, { text : 'paramètre' } ]" />
+      <h2>Paramètre</h2>
+    </div>
+
+    <tabs :action="{ general : 'Mon profil utilisateur', school : 'Mon espace scolaire' }" :default-value="activeTabs" v-model="activeTabs" />
 
     <div class="containerParams">
       <form-users
@@ -35,7 +42,9 @@ const authStore = useAuth()
               }
             }
           }"
+          :without-email="true"
       />
+      <params-school-space v-if="activeTabs === 'school'" />
     </div>
 
   </div>
@@ -44,6 +53,11 @@ const authStore = useAuth()
 <style scoped lang="scss">
 .containerParams {
   padding: 2rem 0;
+
+}
+
+.title {
+  margin-bottom: 1rem;
 
 }
 </style>
