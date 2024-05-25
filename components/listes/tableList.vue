@@ -228,11 +228,11 @@ async function onsearch(search) {
 
 <template>
 
-  <div class="action between filterBar">
-    <Button custom-class="small">
-      <span>Exporter</span>
-      <export />
-    </Button>
+  <div class="action end filterBar">
+<!--    <Button custom-class="small">-->
+<!--      <span>Exporter</span>-->
+<!--      <export />-->
+<!--    </Button>-->
     <search-on-uri :onsearch="onsearch" :button-is-loading="loading" />
   </div>
 

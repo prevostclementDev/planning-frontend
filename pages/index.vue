@@ -4,9 +4,11 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import {useRouting} from "~/stores/routing.js";
 import {useModal} from "~/stores/ui/modal.js";
 import Lists from "~/components/notifications/lists.vue";
+import {useFetch} from "~/stores/Fetch.js";
 
 const modalStore = useModal()
 const routingStore = useRouting()
+const fetchStore = useFetch()
 const useNavBarStore = useNavBar()
 useNavBarStore.setNavBar(true)
 
@@ -18,6 +20,33 @@ const openPlanningModal = () => {
   modalStore.action[modalStore.actionType.OPEN_MODAL]('planningModal', {
     modalTitle : 'Ajouter un planning'
   })
+}
+
+onMounted(() => {
+
+  fetchStore.action[fetchStore.actionType.FETCH_DATA]('schoolspaces/users/recently-view')
+
+})
+
+const linkToRecentlyView = (type,id) => {
+
+  switch (type) {
+
+    case 'planning':
+      return routingStore.url.planningSingle(id)
+    case 'teachers':
+      return routingStore.url.listeSingle('mes-intervenants')
+    case 'courses':
+      return routingStore.url.listeSingle('mes-cours')
+    case 'class':
+      return routingStore.url.listeSingle('mes-classes')
+    case 'students':
+      return routingStore.url.listeSingle('mes-eleves')
+    case 'programs':
+      return routingStore.url.listeSingle('mes-programmes')
+
+  }
+
 }
 
 </script>
@@ -64,7 +93,7 @@ const openPlanningModal = () => {
         <lists />
       </div>
 
-      <div class="card clear w2-3">
+      <div class="card clear w2-3" v-if="false && fetchStore.state.data['schoolspaces/users/recently-view'] && fetchStore.state.data['schoolspaces/users/recently-view'].data.recentlyView">
         <h2>Récemment utilisé</h2>
 
         <div class="row smallgap">
@@ -73,28 +102,12 @@ const openPlanningModal = () => {
             <path d="M44.0986 25.6437C51.6913 36.9209 46.6271 73.6045 62.1708 70.1552C70.1828 67.2324 73.8474 49.1085 78.2696 40.4877C82.3046 31.1912 86.3973 21.781 92.6656 14.6813C96.2249 10.3004 99.5453 5.17524 104.241 2.83265C118.741 -4.05297 124.147 8.12167 127.408 24.4713C132.522 43.0342 129.278 66.0929 139.603 81.8573C147.712 88.9319 155.837 54.699 159.725 48.0359C164.727 35.4221 179.914 19.2623 189.575 33.1247C192.833 38.8316 193.571 46.1048 194.385 52.9295C194.789 56.8941 195.265 60.8396 195.693 64.8079C194.267 65.012 192.843 65.2009 191.417 65.405C189.776 65.6364 188.119 65.7884 186.486 66.0671C185.332 66.2682 184.167 66.4675 183.015 66.6535C182.284 66.768 181.564 67.0072 180.836 67.2142C180.789 66.439 180.719 65.66 180.637 64.8792C180.363 61.0427 179.874 54.7917 175.817 58.034C170.12 62.2605 168.663 71.1668 166.813 78.6751C165.586 83.5331 163.484 87.8837 161.498 92.2529C156.565 106.69 142.394 119.248 131.184 107.843C128.833 105.382 127.357 101.892 125.625 98.7462C123.014 93.5872 119.835 88.8143 118.049 83.0488C115.572 74.1178 115.033 64.4191 114.966 54.9947C114.531 45.3278 117.47 28.6706 107.831 25.6229C102.637 27.7329 100.626 37.519 97.1551 42.605C91.578 53.116 87.5117 64.6804 83.3345 76.1657C79.4587 83.8595 74.4697 91.9606 67.3187 94.3902C59.9438 96.17 51.6536 95.9467 45.3684 89.9904C41.3121 86.9213 40.4396 80.8552 40.1512 75.2504C39.2087 65.7026 38.9638 55.8969 36.7025 46.6776C35.2741 42.0285 33.3494 35.3197 28.5312 37.3204C24.0432 38.5596 20.762 42.6159 18.3401 47.4842C17.5323 47.1412 16.7361 46.8 15.9181 46.44C15.0986 46.0952 14.2736 45.8109 13.45 45.5114C12.6599 45.2327 11.8624 44.9067 11.0565 44.6714C9.15899 44.0943 7.26288 43.5021 5.34954 42.9685C3.70141 42.5077 2.05327 42.0469 0.405138 41.5861C9.15266 20.3824 29.2366 2.14218 44.1116 25.6304L44.0986 25.6437Z" fill="#FECB7D"/>
           </svg>
 
-          <nuxt-link to="/" class="card rm-underline blur">
-            <h3>Planning Master UX/UI</h3>
-          </nuxt-link>
-
-          <nuxt-link to="/" class="card rm-underline blur">
-            <h3>Planning Master UX/UI</h3>
-          </nuxt-link>
-
-          <nuxt-link to="/" class="card rm-underline blur">
-            <h3>Planning Master UX/UI</h3>
-          </nuxt-link>
-
-          <nuxt-link to="/" class="card rm-underline blur">
-            <h3>Planning Master UX/UI</h3>
-          </nuxt-link>
-
-          <nuxt-link to="/" class="card rm-underline blur">
-            <h3>Planning Master UX/UI</h3>
-          </nuxt-link>
-
-          <nuxt-link to="/" class="card rm-underline blur">
-            <h3>Planning Master UX/UI</h3>
+          <nuxt-link
+              v-for="data in fetchStore.state.data['schoolspaces/users/recently-view'].data.recentlyView"
+              :to="linkToRecentlyView(data.type,data.id)"
+              class="card rm-underline blur"
+          >
+            <h3>{{ data.type }}</h3>
           </nuxt-link>
 
         </div>

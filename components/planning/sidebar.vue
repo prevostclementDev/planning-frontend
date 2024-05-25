@@ -19,7 +19,7 @@ const props = defineProps({
 
 <template>
   <div class="innerSidebarPlanning">
-    <Tabs v-model="displayRightPanel" :action="{ programs : 'Maquette pédagogique liée', action : 'Action' }" :default-value="displayRightPanel" />
+    <Tabs v-model="displayRightPanel" :action="{ programs : 'Maquette pédagogique liée', action : 'Action du planning' }" :default-value="displayRightPanel" />
 
     <action-panel v-show="displayRightPanel === 'action'" :planning="planning" />
     <draggable-course-liste v-show="displayRightPanel === 'programs'" :id-calendar="planningId" :planning="planning" />

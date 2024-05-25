@@ -62,7 +62,6 @@ onUnmounted(() => {
       {text : 'Mes plannings', url : useRoutingStore.url.planningsList },
       { text : titlePage }]"
       />
-      <h2> {{ titlePage }} </h2>
     </div>
 
     <div class="contentPlanning">
@@ -90,7 +89,7 @@ onUnmounted(() => {
 <style scoped lang="scss">
 .pagePlanningLayout {
   @include grid(
-    80px 1fr,
+    30px 1fr,
     calc(100vw - 350px - 105px - 4rem) 350px,
     "title sidebar"
     "planning sidebar"
