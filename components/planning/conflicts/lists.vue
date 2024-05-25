@@ -54,7 +54,7 @@ function openConflict(idPlanning, date, idSlot){
 
 <template>
   <div :class="( idSlots !== null ) ? 'conflictList forSlot' : 'conflictList'">
-    <h3 v-if="props.idSlots === null">Erreur(s) & conflit(s)</h3>
+<!--    <h3 v-if="props.idSlots === null">Erreur(s) & conflit(s)</h3>-->
 
     <div class="baseContainer">
 
@@ -110,7 +110,7 @@ function openConflict(idPlanning, date, idSlot){
         </div>
 
       </div>
-      <div v-else-if="fetchStore.state.data[url] && fetchStore.state.data[url].data.conflicts.length === 0" class="noConflict">
+      <div v-else-if="fetchStore.state.data[url] && fetchStore.state.data[url].data.conflicts.length === 0 && props.idSlots !== null" class="noConflict">
         Aucun conflit sur le {{ ( props.idSlots === null ) ? 'planning' : 'cours' }}
       </div>
 
@@ -122,7 +122,7 @@ function openConflict(idPlanning, date, idSlot){
 <style scoped lang="scss">
 .conflictList {
   margin: 1rem 0;
-  min-height: 180px;
+  //min-height: 180px;
 
   h3 {
     border-bottom: 2px solid getColor(primary4,.2);
@@ -137,7 +137,7 @@ function openConflict(idPlanning, date, idSlot){
   }
 
   .containerList {
-    padding: 2rem 0 1rem;
+    padding: 1rem 0;
     width: 100%;
     @include flex(flex-start,flex-start,row,nowrap,1rem,1rem);
     overflow: hidden;

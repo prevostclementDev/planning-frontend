@@ -44,7 +44,9 @@ const rootingStore = useRouting()
           }"
           :without-email="true"
       />
-      <params-school-space v-if="activeTabs === 'school'" />
+      <div  v-if="activeTabs !== 'general'">
+        aucun paramètre disponible pour le moment...
+      </div>
     </div>
 
   </div>

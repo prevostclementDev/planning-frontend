@@ -15,13 +15,13 @@ export const useAuth = defineStore('auth', () => {
     'PERMISSIONS' : null
   }
 
-  const saveState = window.sessionStorage.getItem(localAuthItem);
+  const saveState = window.localStorage.getItem(localAuthItem);
   const authState = saveState ? ref(JSON.parse(saveState)) : ref(initialValue)
 
   const authError = ref([]);
 
   watch(authState , (newV, oldV) => {
-    window.sessionStorage.setItem(localAuthItem, JSON.stringify(newV))
+    window.localStorage.setItem(localAuthItem, JSON.stringify(newV))
   })
 
   // Authentification api call

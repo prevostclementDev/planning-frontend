@@ -31,8 +31,8 @@ const rules = computed(() => {
 // Auth form data
 // **************
 const formData = ref({
-  mail : 'clementprevost45@gmail.com',
-  password : 'motdepasse12.',
+  mail : '', // clementprevost45@gmail.com
+  password : '', // motdepasse12.
 })
 
 // ****************
