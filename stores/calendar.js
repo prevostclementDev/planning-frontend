@@ -92,9 +92,9 @@ export const useCalendar = defineStore('calendar', () => {
       if ( state.value.calendarId !== 0 && state.value.calendar ) {
 
         // get current slot
-        const month = ((data.start.getMonth() + 1) < 10 ) ? "0"+ (data.start.getMonth() + 1) : (data.start.getMonth() + 1)
-        const day = (data.start.getDate() < 10 ) ? "0"+ data.start.getDate() : data.start.getDate()
-        const startDataFormat = data.start.getFullYear() + '-' + month + '-' + day
+        const month = ((state.value.calendar?.getApi().currentData.currentDate.getMonth() + 1) < 10 ) ? "0"+ (state.value.calendar?.getApi().currentData.currentDate.getMonth() + 1) : (state.value.calendar?.getApi().currentData.currentDate.getMonth() + 1)
+        const day = (state.value.calendar?.getApi().currentData.currentDate.getDate() < 10 ) ? "0"+ state.value.calendar?.getApi().currentData.currentDate.getDate() : state.value.calendar?.getApi().currentData.currentDate.getDate()
+        const startDataFormat = state.value.calendar?.getApi().currentData.currentDate.getFullYear() + '-' + month + '-' + day
 
         const url = `schoolspaces/plannings/${state.value.calendarId}/slots?start_date=${startDataFormat}`
 

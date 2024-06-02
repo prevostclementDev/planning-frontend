@@ -6,6 +6,7 @@ import {useNavBar} from "~/stores/ui/navbar";
 import {useRouting} from "~/stores/routing.js";
 import Sidebar from "~/components/planning/sidebar.vue";
 import {usePlanning} from "~/stores/entity/planning.js";
+import {useCalendar} from "~/stores/calendar.js";
 
 const { $toast } = useNuxtApp()
 
@@ -24,6 +25,7 @@ useHead(() => ({
 
 const urlApi = `${planningStore.baseUrl}/${route.params.id}`
 
+const calendarStore = useCalendar();
 const useFetchStore = useFetch()
 
 onMounted(async () => {
@@ -44,6 +46,13 @@ onMounted(async () => {
   }
 
   titlePage.value = useFetchStore.state.data[urlApi].data.planning.name
+
+  calendarStore.mutation[calendarStore.mutationType.INIT_OPTIONS]({
+    validRange: {
+      start: new Date(useFetchStore.state?.data[urlApi]?.data?.planning.start_date).setDate(new Date(useFetchStore.state?.data[urlApi]?.data?.planning.start_date).getDate()+1),
+      end: new Date(useFetchStore.state?.data[urlApi]?.data?.planning.end_date).setDate(new Date(useFetchStore.state?.data[urlApi]?.data?.planning.end_date).getDate()+1)
+    },
+  })
 
 })
 
