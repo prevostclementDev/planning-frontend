@@ -202,37 +202,20 @@ export const useCreateDonnees = defineStore('createDonnees', () => {
 
     'classroom' : {
       title : 'Une/des salle(s)',
-      stepNumber : 3,
+      stepNumber : 2,
       step : {
-        1 : {
-          title : 'Choisissez votre méthode',
-          props : {
-            onChoose : (choice) => {
-              if ( choice === 'table' ) {
-                delete listesTypeOptions.classroom.step[2].props.dataset
-                updateStep()
-              }
-            },
-            onImportSuccess : (data) => {
-              listesTypeOptions.classroom.step[2].props.dataset = data.data.insert
-              updateStep()
-            },
-            importUrl : 'schoolspaces/courses/import'
-          },
-          components : chooseImportOrNot
-        },
-        2: {
+        1: {
           title : 'Ajouter une/des salle(s)',
           props : {
             insertType : 'classroom',
-            apiUrl : 'schoolspaces/classroom/list',
+            apiUrl : 'schoolspaces/classrooms/list',
             onsuccess : async (apiResult) => {
               updateStep()
             }
           },
           components : formListInsert
         },
-        3: {
+        2: {
           title : 'Et voila ! Toutes les données sont enregistrées',
           components : end
         }

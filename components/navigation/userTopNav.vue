@@ -48,7 +48,7 @@ const toggleNotice = (noticeName) => {
           <Notification @click.prevent="toggleNotice('notification')" />
           <span
               class="number"
-              v-if="notificationStore.state.list !== null && notificationStore.state.list.data.conflicts.length !== 0"
+              v-if="notificationStore?.state?.list !== null && notificationStore?.state?.list?.data.conflicts.length !== 0"
               @click.prevent="toggleNotice('notification')"
           >
             {{ notificationStore.state.list.data.conflicts.length }}

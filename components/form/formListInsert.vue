@@ -124,6 +124,9 @@ switch (props.insertType) {
       inputTitle : ['Nom de la salle','Capacité'],
       inputModel : model,
       modelOn : tempModelOn,
+      specificField : {
+        'capacity' : { type : 'number',  }
+      }
     }
 
     break
@@ -261,7 +264,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <form action="" @submit.prevent="submit">
+  <form action="">
 
     <div class="errors"> {{ globalError }} </div>
 
@@ -275,7 +278,7 @@ onUnmounted(() => {
     />
 
     <div class="action end">
-      <Button type="submit"> Enregistrer </Button>
+      <Button type="submit" @click.prevent="submit"> Enregistrer </Button>
     </div>
 
   </form>

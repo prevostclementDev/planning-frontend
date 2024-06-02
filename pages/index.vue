@@ -49,6 +49,27 @@ const linkToRecentlyView = (type,id) => {
 
 }
 
+const nameRecentlyView = ( type, name ) => {
+
+  switch (type) {
+
+    case 'planning':
+      return 'Planning : '+name
+    case 'teachers':
+      return 'Liste des intervenants'
+    case 'courses':
+      return 'Liste des cours'
+    case 'class':
+      return 'Liste des classes'
+    case 'students':
+      return 'Liste des élèves'
+    case 'programs':
+      return 'Liste des maquettes pédagogiques'
+
+  }
+
+}
+
 </script>
 
 <template>
@@ -93,7 +114,7 @@ const linkToRecentlyView = (type,id) => {
         <lists />
       </div>
 
-      <div class="card clear w2-3" v-if="false && fetchStore.state.data['schoolspaces/users/recently-view'] && fetchStore.state.data['schoolspaces/users/recently-view'].data.recentlyView">
+      <div class="card clear w2-3" v-if="fetchStore.state.data['schoolspaces/users/recently-view'] && fetchStore.state.data['schoolspaces/users/recently-view'].data.recentlyView">
         <h2>Récemment utilisé</h2>
 
         <div class="row smallgap">
@@ -107,7 +128,7 @@ const linkToRecentlyView = (type,id) => {
               :to="linkToRecentlyView(data.type,data.id)"
               class="card rm-underline blur"
           >
-            <h3>{{ data.type }}</h3>
+            <h3>{{ nameRecentlyView(data.type, data?.name) }} </h3>
           </nuxt-link>
 
         </div>

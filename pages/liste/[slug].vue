@@ -10,6 +10,7 @@ import {useUsers} from "~/stores/entity/users.js";
 import {useClass} from "~/stores/entity/class.js";
 import {usePrograms} from "~/stores/entity/programs.js";
 import {useCourse} from "~/stores/entity/cours.js";
+import {useClassRoom} from "~/stores/entity/classroom.js";
 
 const useRoutingStore = useRouting()
 const { $timeFormat, $toast } = useNuxtApp()
@@ -122,6 +123,9 @@ switch (route.params.slug) {
     break;
 
   case 'mes-salles':
+
+    store = useClassRoom()
+
     // Page title
     titlePage.value = 'Mes salles'
 
@@ -129,8 +133,11 @@ switch (route.params.slug) {
     titleArray = ['Nom de la salle','Capacité']
 
     // Action
-    actionAdd = (e) => {console.log(e)}
-    textButtonAdd = null
+    actionAdd = (e) => {
+      useCreateDonneesStore.state.parcours = 'classroom'
+      navigateTo('/creer-des-donnees')
+    }
+    textButtonAdd = 'Ajouter'
     break;
 
   case 'mes-intervenants':

@@ -35,12 +35,12 @@ const endDateObject = new Date(props.endDate)
 const calendar = ref(null);
 const calendarStore = useCalendar();
 
-calendarStore.mutation[calendarStore.mutationType.INIT_OPTIONS]({
-  validRange: {
-    start: new Date(props.startDate).setDate(new Date(props.startDate).getDate() + 1),
-    end: new Date(props.endDate).setDate(new Date(props.endDate).getDate() + 1)
-  },
-})
+// calendarStore.mutation[calendarStore.mutationType.INIT_OPTIONS]({
+//   validRange: {
+//     start: new Date(props.startDate).setDate(new Date(props.startDate).getDate() + 1),
+//     end: new Date(props.endDate).setDate(new Date(props.endDate).getDate() + 1)
+//   },
+// })
 
 calendarStore.mutation[calendarStore.mutationType.SET_CALENDAR_ID](props.planningsId)
 

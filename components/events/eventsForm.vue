@@ -129,8 +129,8 @@ async function submit(){
           />
 
           <SearchSelect
-              url="schoolspaces/classroom"
-              :display-array="[ 'first_name', 'last_name' ]"
+              url="schoolspaces/classrooms"
+              :display-array="[ 'name' ]"
               title="Associer à une salle"
               :default-value="(formData.classroomId && formData.classroom) ? formData.classroom : ''"
               v-model="formData.classroomId"
