@@ -1,7 +1,9 @@
 {
-  "name": "nuxt-app",
+  "name": "admin.doriane",
   "private": true,
   "type": "module",
+  "version": "1.0.0",
+  "main": "./nuxt.config.ts",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
